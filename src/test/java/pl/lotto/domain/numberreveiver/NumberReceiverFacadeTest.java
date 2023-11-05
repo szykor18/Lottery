@@ -4,11 +4,8 @@ import org.junit.jupiter.api.Test;
 import pl.lotto.domain.AdjustableClock;
 import pl.lotto.domain.numberreveiver.dto.InputNumbersResultDto;
 import pl.lotto.domain.numberreveiver.dto.TicketDto;
-
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Set;
 
@@ -21,6 +18,7 @@ class NumberReceiverFacadeTest {
     NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
             new NumberValidator(),
             new InMemoryNumberReceiverRepositoryTestImpl(),
+            new HashGenerator(),
             clock
     );
 
@@ -31,7 +29,7 @@ class NumberReceiverFacadeTest {
         //when
         InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
-        assertThat(result.message()).isEqualTo("success");
+        assertThat(result.message()).isEqualTo("SUCCESS");
     }
 
     @Test
@@ -41,7 +39,7 @@ class NumberReceiverFacadeTest {
         //when
         InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
-        assertThat(result.message()).isEqualTo("failed");
+        assertThat(result.message()).isEqualTo("YOU SHOULD GIVE 6 NUMBERS");
     }
 
     @Test
@@ -51,7 +49,7 @@ class NumberReceiverFacadeTest {
         //when
         InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
-        assertThat(result.message()).isEqualTo("failed");
+        assertThat(result.message()).isEqualTo("YOU SHOULD GIVE 6 NUMBERS");
     }
 
     @Test
@@ -61,7 +59,7 @@ class NumberReceiverFacadeTest {
         //when
         InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
-        assertThat(result.message()).isEqualTo("failed");
+        assertThat(result.message()).isEqualTo("YOU SHOULD GIVE NUMBERS FROM 1 TO 99");
     }
     @Test
     public void should_return_save_to_database_when_user_gave_six_numbers() {
@@ -74,11 +72,21 @@ class NumberReceiverFacadeTest {
         //then
         assertThat(ticketDtos).contains(
                 TicketDto.builder()
-                        .ticketId(result.ticketId())
+                        .hash(result.ticketDto().hash())
                         .drawDate(drawDate)
-                        .numbersFromUser(result.numbersFromUser())
+                        .numbersFromUser(result.ticketDto().numbersFromUser())
                         .build()
         );
+    }
+    @Test
+    public void should_return_correct_hash() {
+        //given
+        Set<Integer> numbersFromUser = Set.of(1,2,3,4,5,6);
+        //when
+        String response = numberReceiverFacade.inputNumbers(numbersFromUser).ticketDto().hash();
+        //then
+        assertThat(response).hasSize(36);
+        assertThat(response).isNotNull();
     }
 
 }

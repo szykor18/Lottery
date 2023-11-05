@@ -8,29 +8,30 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
+import static pl.lotto.domain.numberreveiver.ValidationResult.INPUT_SUCCESS;
 
 @AllArgsConstructor
 public class NumberReceiverFacade {
-    private NumberValidator validator;
-    private NumberReceiverRepository repository;
+    private final NumberValidator validator;
+    private final NumberReceiverRepository repository;
+    private final HashGenerable hashGenerator;
     private final Clock clock;
 
     public InputNumbersResultDto inputNumbers(Set<Integer> numbersFromUser) {
-        boolean areAllNumbersInRange = validator.areAllNumbersInRange(numbersFromUser);
-        if (areAllNumbersInRange) {
-            String ticketId = UUID.randomUUID().toString();
-            LocalDateTime drawDate = LocalDateTime.now(clock);
-            Ticket savedTicket = repository.save(new Ticket(ticketId, drawDate, numbersFromUser));
+        List<ValidationResult> validationResultList = validator.validate(numbersFromUser);
+        if (!validationResultList.isEmpty()) {
+            String resultMessage = validator.createResultMessage();
             return InputNumbersResultDto.builder()
-                    .message("success")
-                    .drawDate(savedTicket.drawDate())
-                    .ticketId(savedTicket.ticketId())
-                    .numbersFromUser(numbersFromUser)
+                    .ticketDto(null)
+                    .message(resultMessage)
                     .build();
         }
+        String hash = hashGenerator.getHash();
+        LocalDateTime drawDate = LocalDateTime.now(clock);
+        Ticket savedTicket = repository.save(new Ticket(hash, drawDate, numbersFromUser));
         return InputNumbersResultDto.builder()
-                .message("failed")
+                .ticketDto(TicketMapper.mapFromTicket(savedTicket))
+                .message(INPUT_SUCCESS.info)
                 .build();
     }
     public List<TicketDto> userNumbers(LocalDateTime date) {

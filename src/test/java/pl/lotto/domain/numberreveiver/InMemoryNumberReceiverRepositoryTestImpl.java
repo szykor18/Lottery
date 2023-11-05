@@ -9,7 +9,7 @@ public class InMemoryNumberReceiverRepositoryTestImpl implements NumberReceiverR
     Map<String, Ticket> inMemoryDatabase = new ConcurrentHashMap<>();
     @Override
     public Ticket save(Ticket ticket) {
-        inMemoryDatabase.put(ticket.ticketId(), ticket);
+        inMemoryDatabase.put(ticket.hash(), ticket);
         return ticket;
     }
 
