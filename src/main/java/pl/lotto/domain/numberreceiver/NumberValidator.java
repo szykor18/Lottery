@@ -1,7 +1,6 @@
-package pl.lotto.domain.numberreveiver;
+package pl.lotto.domain.numberreceiver;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

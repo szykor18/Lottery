@@ -1,4 +1,4 @@
-package pl.lotto.domain.numberreveiver;
+package pl.lotto.domain.numberreceiver;
 
 enum ValidationResult {
     NOT_SIX_NUMBERS_GIVEN("YOU SHOULD GIVE 6 NUMBERS"),

@@ -1,11 +1,10 @@
-package pl.lotto.domain.numberreveiver;
+package pl.lotto.domain.numberreceiver;
 
 import org.junit.jupiter.api.Test;
 import pl.lotto.domain.AdjustableClock;
-import pl.lotto.domain.numberreveiver.dto.InputNumbersResultDto;
-import pl.lotto.domain.numberreveiver.dto.TicketDto;
+import pl.lotto.domain.numberreceiver.dto.InputNumbersResultDto;
+import pl.lotto.domain.numberreceiver.dto.TicketDto;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;

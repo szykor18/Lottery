@@ -1,13 +1,13 @@
-package pl.lotto.domain.numberreveiver;
+package pl.lotto.domain.numberreceiver;
 
 import lombok.AllArgsConstructor;
-import pl.lotto.domain.numberreveiver.dto.InputNumbersResultDto;
-import pl.lotto.domain.numberreveiver.dto.TicketDto;
+import pl.lotto.domain.numberreceiver.dto.InputNumbersResultDto;
+import pl.lotto.domain.numberreceiver.dto.TicketDto;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import static pl.lotto.domain.numberreveiver.ValidationResult.INPUT_SUCCESS;
+import static pl.lotto.domain.numberreceiver.ValidationResult.INPUT_SUCCESS;
 
 @AllArgsConstructor
 public class NumberReceiverFacade {
