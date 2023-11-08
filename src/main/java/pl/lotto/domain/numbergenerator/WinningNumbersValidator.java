@@ -3,8 +3,8 @@ package pl.lotto.domain.numbergenerator;
 import java.util.Set;
 
 class WinningNumbersValidator {
-    private final int maximalRangeOfNumber = 99;
-    private final int minimalRangeOfNumber = 1;
+    private final int MAXIMAL_RANGE_OF_NUMBER = 99;
+    private final int MINIMAL_RANGE_OF_NUMBER = 1;
 
     Set<Integer> validate(Set<Integer> winningNumbers) {
         if (outOfRange(winningNumbers)) {
@@ -15,6 +15,6 @@ class WinningNumbersValidator {
 
     private boolean outOfRange(Set<Integer> winningNumbers) {
         return winningNumbers.stream()
-                .anyMatch(number -> number > maximalRangeOfNumber || number < minimalRangeOfNumber);
+                .anyMatch(number -> number > MAXIMAL_RANGE_OF_NUMBER || number < MINIMAL_RANGE_OF_NUMBER);
     }
 }
