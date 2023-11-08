@@ -1,8 +1,9 @@
-package pl.lotto.domain.numberreveiver;
+package pl.lotto.domain.resultchecker;
+
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-
-//entity to database
+@Builder
 record Ticket(String hash, LocalDateTime drawDate, Set<Integer> numbersFromUser) {
 }

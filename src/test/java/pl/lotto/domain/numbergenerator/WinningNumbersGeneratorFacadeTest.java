@@ -2,7 +2,7 @@ package pl.lotto.domain.numbergenerator;
 
 import org.junit.jupiter.api.Test;
 import pl.lotto.domain.numbergenerator.dto.WinningNumbersDto;
-import pl.lotto.domain.numberreveiver.NumberReceiverFacade;
+import pl.lotto.domain.numberreceiver.NumberReceiverFacade;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;

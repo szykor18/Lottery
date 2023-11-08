@@ -1,7 +1,7 @@
 package pl.lotto.domain.numbergenerator;
 import lombok.AllArgsConstructor;
 import pl.lotto.domain.numbergenerator.dto.WinningNumbersDto;
-import pl.lotto.domain.numberreveiver.NumberReceiverFacade;
+import pl.lotto.domain.numberreceiver.NumberReceiverFacade;
 import java.time.LocalDateTime;
 import java.util.Set;
 
