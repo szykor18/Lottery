@@ -3,9 +3,7 @@ package pl.lotto.domain.numberreveiver;
 import lombok.AllArgsConstructor;
 import pl.lotto.domain.numberreveiver.dto.InputNumbersResultDto;
 import pl.lotto.domain.numberreveiver.dto.TicketDto;
-
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -48,5 +46,9 @@ public class NumberReceiverFacade {
     public List<TicketDto> retrieveAllTicketsByNextDrawDate() {
         LocalDateTime nextDrawDate = drawDateGenerator.getNextDrawDate();
         return retrieveAllTicketsByNextDrawDate(nextDrawDate);
+    }
+
+    public LocalDateTime retrieveNextDrawDate() {
+        return drawDateGenerator.getNextDrawDate();
     }
 }

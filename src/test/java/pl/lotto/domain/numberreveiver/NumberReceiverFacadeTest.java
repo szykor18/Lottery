@@ -94,7 +94,6 @@ class NumberReceiverFacadeTest {
     public void should_return_correct_draw_date() {
         //given
         Set<Integer> numbersFromUser = Set.of(1,2,3,4,5,6);
-        clock.setClockToLocalDateTime(LocalDateTime.of(2023,11,05,15,00));
         //when
         LocalDateTime localDateTime = numberReceiverFacade.inputNumbers(numbersFromUser).ticketDto().drawDate();
         //then
