@@ -1,8 +1,8 @@
 package pl.lotto.domain.resultannouncer;
 
 import lombok.AllArgsConstructor;
-import pl.lotto.domain.resultannouncer.dto.PlayerResponseDto;
-import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerResponseDto;
+import pl.lotto.domain.resultannouncer.dto.ResponseDto;
+import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerDto;
 import pl.lotto.domain.resultchecker.ResultCheckerFacade;
 import pl.lotto.domain.resultchecker.dto.PlayerDto;
 
@@ -10,53 +10,51 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static pl.lotto.domain.resultannouncer.ResultBuilder.buildPlayerResponse;
-import static pl.lotto.domain.resultannouncer.ResultBuilder.buildToPlayerResponseDto;
-import static pl.lotto.domain.resultannouncer.ResultMapper.mapToPlayerResponseDto;
+import static pl.lotto.domain.resultannouncer.ResultMapper.*;
+import static pl.lotto.domain.resultannouncer.ResultMessage.*;
 @AllArgsConstructor
 public class ResultAnnouncerFacade {
     private final ResultCheckerFacade resultCheckerFacade;
-    private final PlayerResponseRepository playerResponseRepository ;
+    private final ResponseRepository responseRepository;
     private final Clock clock;
-
-    public ResultAnnouncerResponseDto checkResult(String hash) {
-        if (playerResponseRepository.existsById(hash)) {
-            Optional<PlayerResponse> playerByIdCached = playerResponseRepository.findById(hash);
-            if (playerByIdCached.isPresent()) {
-               return ResultAnnouncerResponseDto.builder()
-                       .playerResponseDto(mapToPlayerResponseDto(playerByIdCached.get()))
-                       .message(MessageResponse.ALREADY_CHECKED.info)
-                       .build();
+    public ResultAnnouncerDto checkResult(String hash) {
+        if (responseRepository.existsById(hash)) {
+            Optional<Response> cachedResponse = responseRepository.findById(hash);
+            if (cachedResponse.isPresent()) {
+                return mapResponseToDto(cachedResponse.get())
+                        .message(ALREADY_CHECKED_MESSAGE.info)
+                        .build();
             }
         }
-        PlayerDto playerByHash = resultCheckerFacade.findPlayerByHash(hash);
-        if (playerByHash == null) {
-            return ResultAnnouncerResponseDto.builder()
-                    .playerResponseDto(null)
-                    .message(MessageResponse.HASH_DOES_NOT_EXIST_MESSAGE.info)
+        PlayerDto playerDto = resultCheckerFacade.findPlayerByHash(hash);
+        if (playerDto == null) {
+            return ResultAnnouncerDto.builder()
+                    .responseDto(null)
+                    .message(HASH_NOT_EXISTS_MESSAGE.info)
                     .build();
         }
-        PlayerResponseDto playerResponseDto = buildToPlayerResponseDto(playerByHash);
-        playerResponseRepository.save(buildPlayerResponse(playerResponseDto, LocalDateTime.now(clock)));
-        if (playerResponseRepository.existsById(hash) && isBeforeResultAnnouncementTime(playerByHash)) {
-            return ResultAnnouncerResponseDto.builder()
-                    .playerResponseDto(playerResponseDto)
-                    .message(MessageResponse.WAIT_MESSAGE.info)
+        ResponseDto responseDto = mapFromPlayerDto(playerDto);
+        responseRepository.save(mapFromResponseDto(responseDto));
+        if (responseRepository.existsById(hash) && isBeforeDrawTime(LocalDateTime.now(clock), responseDto)) {
+            return ResultAnnouncerDto.builder()
+                    .responseDto(responseDto)
+                    .message(WAIT_MESSAGE.info)
                     .build();
         }
         if (resultCheckerFacade.findPlayerByHash(hash).isWinner()) {
-            return ResultAnnouncerResponseDto.builder()
-                    .playerResponseDto(playerResponseDto)
-                    .message(MessageResponse.WIN_MESSAGE.info)
+            return ResultAnnouncerDto.builder()
+                    .responseDto(responseDto)
+                    .message(WIN_MESSAGE.info)
                     .build();
         }
-        return ResultAnnouncerResponseDto.builder()
-                .playerResponseDto(playerResponseDto)
-                .message(MessageResponse.LOSE_MESSAGE.info)
+        return ResultAnnouncerDto.builder()
+                .responseDto(responseDto)
+                .message(LOSE_MESSAGE.info)
                 .build();
     }
-    private boolean isBeforeResultAnnouncementTime(PlayerDto playerDto) {
-        LocalDateTime drawTime = playerDto.drawDate();
-        return LocalDateTime.now(clock).isBefore(drawTime);
+
+    private boolean isBeforeDrawTime(LocalDateTime now, ResponseDto responseDto) {
+        LocalDateTime drawDate = responseDto.drawDate();
+        return now.isBefore(drawDate);
     }
 }
