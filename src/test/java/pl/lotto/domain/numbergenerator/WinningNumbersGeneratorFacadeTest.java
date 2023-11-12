@@ -16,7 +16,7 @@ public class WinningNumbersGeneratorFacadeTest {
     private final WinningNumbersRepository winningNumbersRepository = new WinningNumbersRepositoryTestImpl();
     NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
     WinningNumbersGeneratorFacade winningNumbersGeneratorFacade = new WinningNumbersGeneratorFacade(
-            new RandomNumbersGenerator(),
+            new SecureRandomNumbersGenerator(),
             new WinningNumbersValidator(),
             numberReceiverFacade,
             new WinningNumbersRepositoryTestImpl()
