@@ -2,8 +2,6 @@ package pl.lotto.domain.numbergenerator;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.lotto.domain.drawdategenerator.DrawDateConfiguration;
-import pl.lotto.domain.drawdategenerator.DrawDateFacade;
 import pl.lotto.domain.numberreceiver.NumberReceiverFacade;
 
 import java.time.LocalDateTime;
@@ -13,7 +11,7 @@ import java.util.Optional;
 public class WInningNumbersGeneratorConfiguration {
 
     @Bean
-    WinningNumbersRepository repository() {
+    WinningNumbersRepository ticketRepository() {
         return new WinningNumbersRepository() {
             @Override
             public WinningNumbers save(WinningNumbers winningNumbers) {
@@ -31,12 +29,6 @@ public class WInningNumbersGeneratorConfiguration {
             }
         };
     }
-
-    @Bean
-    NumberReceiverFacade numberReceiverFacade() {
-        return new NumberReceiverFacade(null, null, null, new DrawDateConfiguration().drawDateFacade());
-    }
-
 
     @Bean
     WinningNumbersGeneratorFacade winningNumbersGeneratorFacade(RandomNumbersGenerable randomNumbersGenerable, NumberReceiverFacade numberReceiverFacade, WinningNumbersRepository repository, WinningNumberGeneratorFacadeConfigurationProperties properties) {
