@@ -38,7 +38,7 @@ public class RandomNumberGeneratorRestTemplate implements RandomNumbersGenerable
         );
         List<Integer> numbers = response.getBody();
         System.out.println(numbers);
-        return SixRandomNumbersDto.builder().numbers(numbers.stream().collect(Collectors.toSet())).build();
+            return SixRandomNumbersDto.builder().numbers(numbers.stream().collect(Collectors.toSet())).build();
     }
 
     private String getUrlForService(String service) {
