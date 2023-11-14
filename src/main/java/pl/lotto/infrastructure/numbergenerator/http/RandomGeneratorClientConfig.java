@@ -1,5 +1,6 @@
 package pl.lotto.infrastructure.numbergenerator.http;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,8 @@ import java.time.Duration;
 @Configuration
 public class RandomGeneratorClientConfig {
 
+    @Autowired
+    private RandomNumberGeneratorRestTemplateConfigurationProperties properties;
     @Bean
     public RestTemplateResponseErrorHandler restTemplateResponseErrorHandler() {
         return new RestTemplateResponseErrorHandler();
@@ -21,15 +24,13 @@ public class RandomGeneratorClientConfig {
     public RestTemplate restTemplate(RestTemplateResponseErrorHandler restTemplateResponseErrorHandler) {
         return new RestTemplateBuilder()
                 .errorHandler(restTemplateResponseErrorHandler)
-                .setConnectTimeout(Duration.ofMillis(5000))
-                .setReadTimeout(Duration.ofMillis(5000))
+                .setConnectTimeout(Duration.ofMillis(properties.connectionTimeout()))
+                .setReadTimeout(Duration.ofMillis(properties.readTimeout()))
                 .build();
     }
 
     @Bean
-    public RandomNumbersGenerable remoteNumberGeneratorClient(RestTemplate restTemplate,
-                                                                  @Value("${lotto.number-generator.http.client.config.uri}") String uri,
-                                                                  @Value("${lotto.number-generator.http.client.config.port}") int port) {
-        return new RandomNumberGeneratorRestTemplate(restTemplate, uri, port);
+    public RandomNumbersGenerable remoteNumberGeneratorClient(RestTemplate restTemplate) {
+        return new RandomNumberGeneratorRestTemplate(restTemplate, properties.uri(), properties.port());
     }
 }
