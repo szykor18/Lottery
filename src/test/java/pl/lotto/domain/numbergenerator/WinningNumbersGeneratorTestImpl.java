@@ -11,8 +11,9 @@ public class WinningNumbersGeneratorTestImpl implements RandomNumbersGenerable{
     WinningNumbersGeneratorTestImpl() {
         this.generatedNumbers = Set.of(1, 2, 3, 4, 5, 6);
     }
+
     @Override
-    public SixRandomNumbersDto generateSixRandomNumbers() {
+    public SixRandomNumbersDto generateSixRandomNumbers(int minBound, int maxBound, int count) {
         return SixRandomNumbersDto.builder()
                 .numbers(generatedNumbers)
                 .build();

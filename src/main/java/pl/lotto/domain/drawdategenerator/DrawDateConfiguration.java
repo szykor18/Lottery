@@ -1,9 +1,14 @@
 package pl.lotto.domain.drawdategenerator;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 import java.time.*;
 
+@Configuration
 public class DrawDateConfiguration {
 
-    DrawDateFacade drawDateFacade() {
+    @Bean
+    public DrawDateFacade drawDateFacade() {
         return new DrawDateFacade(drawDateGenerator());
     }
 

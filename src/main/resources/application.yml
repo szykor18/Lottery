@@ -5,6 +5,10 @@ spring:
 
 lotto:
   number-generator:
+    facade:
+      minBound: 1
+      maxBound: 99
+      count: 25
     http:
       client:
         config:
