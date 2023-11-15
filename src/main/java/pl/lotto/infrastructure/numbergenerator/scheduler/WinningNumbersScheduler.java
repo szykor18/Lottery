@@ -14,7 +14,7 @@ import pl.lotto.domain.numbergenerator.dto.WinningNumbersDto;
 public class WinningNumbersScheduler {
 
     WinningNumbersGeneratorFacade winningNumbersGeneratorFacade;
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "${lotto.number-generator.lotteryRunFrequency}")
     public void generateWinningNumbers() {
         log.info("winning numbers scheduler has started");
         WinningNumbersDto winningNumbersDto = winningNumbersGeneratorFacade.generateWinningNumbers();

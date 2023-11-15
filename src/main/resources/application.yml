@@ -5,6 +5,7 @@ spring:
 
 lotto:
   number-generator:
+    lotteryRunFrequency: 0 0 12 * * 6
     facade:
       minBound: 1
       maxBound: 99

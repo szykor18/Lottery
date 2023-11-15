@@ -15,6 +15,7 @@ public class DrawDateConfiguration {
     DrawDateGenerator drawDateGenerator() {
         return new DrawDateGenerator(clock());
     }
+
     Clock clock() {
         return Clock.systemUTC();
     }
