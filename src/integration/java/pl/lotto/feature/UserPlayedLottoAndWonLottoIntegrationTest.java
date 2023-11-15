@@ -3,8 +3,10 @@ package pl.lotto.feature;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import pl.lotto.BaseIntegrationTest;
+import pl.lotto.SpringBootLotteryApplication;
 import pl.lotto.domain.numbergenerator.RandomNumbersGenerable;
 import pl.lotto.domain.numbergenerator.WinningNumbersGeneratorFacade;
 import pl.lotto.domain.numbergenerator.WinningNumbersNotFoundException;
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 
 import static org.awaitility.Awaitility.await;
 
+@SpringBootTest(classes = SpringBootLotteryApplication.class, properties = "scheduler.enabled = true")
 public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTest {
 
     @Autowired

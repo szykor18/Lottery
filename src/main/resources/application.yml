@@ -17,3 +17,6 @@ lotto:
           port: 9090
           connectionTimeout: 5000
           readTimeout: 5000
+
+scheduler:
+  enabled: true

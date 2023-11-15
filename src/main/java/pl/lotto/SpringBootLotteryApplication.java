@@ -9,7 +9,6 @@ import pl.lotto.infrastructure.numbergenerator.http.RandomNumberGeneratorRestTem
 
 @SpringBootApplication
 @EnableConfigurationProperties({WinningNumberGeneratorFacadeConfigurationProperties.class, RandomNumberGeneratorRestTemplateConfigurationProperties.class})
-@EnableScheduling
 public class SpringBootLotteryApplication {
 
     public static void main(String[] args) {
