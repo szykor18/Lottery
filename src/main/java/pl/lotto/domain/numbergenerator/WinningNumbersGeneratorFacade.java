@@ -18,17 +18,19 @@ public class WinningNumbersGeneratorFacade {
         SixRandomNumbersDto sixRandomNumbersDto = randomNumbersGenerator.generateSixRandomNumbers(properties.minBound(), properties.maxBound(), properties.count());
         Set<Integer> winningNumbers = sixRandomNumbersDto.numbers();
         validator.validate(winningNumbers);
-        winningNumbersRepository.save(WinningNumbers.builder()
-                        .winningNumbers(winningNumbers)
-                        .drawDate(drawDate)
-                        .build());
-        return WinningNumbersDto.builder()
+        WinningNumbers winningNumbersDocument = WinningNumbers.builder()
                 .winningNumbers(winningNumbers)
+                .drawDate(drawDate)
+                .build();
+        WinningNumbers savedWinningNumbers = winningNumbersRepository.save(winningNumbersDocument);
+        return WinningNumbersDto.builder()
+                .winningNumbers(savedWinningNumbers.winningNumbers())
+                .drawDate(savedWinningNumbers.drawDate())
                 .build();
     }
 
     public WinningNumbersDto retrieveWinningNumbersByDate(LocalDateTime date) {
-        WinningNumbers winningNumbersByDate = winningNumbersRepository.findWinningNumbersByDate(date)
+        WinningNumbers winningNumbersByDate = winningNumbersRepository.findWinningNumbersByDrawDate(date)
                 .orElseThrow(() -> new WinningNumbersNotFoundException("Not found"));
         return WinningNumbersDto.builder()
                 .winningNumbers(winningNumbersByDate.winningNumbers())
@@ -38,6 +40,6 @@ public class WinningNumbersGeneratorFacade {
 
     public boolean areWinningNumbersGeneratedByDate() {
         LocalDateTime drawDate = numberReceiverFacade.retrieveNextDrawDate();
-        return winningNumbersRepository.existsByDate(drawDate);
+        return winningNumbersRepository.existsByDrawDate(drawDate);
     }
 }

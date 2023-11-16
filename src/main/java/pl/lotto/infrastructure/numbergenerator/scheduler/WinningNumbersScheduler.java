@@ -13,11 +13,13 @@ import pl.lotto.domain.numbergenerator.dto.WinningNumbersDto;
 @Component
 public class WinningNumbersScheduler {
 
-    WinningNumbersGeneratorFacade winningNumbersGeneratorFacade;
+    private final WinningNumbersGeneratorFacade winningNumbersGeneratorFacade;
     @Scheduled(cron = "${lotto.number-generator.lotteryRunFrequency}")
-    public void generateWinningNumbers() {
+    public WinningNumbersDto generateWinningNumbers() {
         log.info("winning numbers scheduler has started");
         WinningNumbersDto winningNumbersDto = winningNumbersGeneratorFacade.generateWinningNumbers();
         log.info(winningNumbersDto.winningNumbers());
+        log.info(winningNumbersDto.drawDate());
+        return winningNumbersDto;
     }
 }
