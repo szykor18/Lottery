@@ -14,10 +14,11 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+import pl.lotto.domain.AdjustableClock;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
-@SpringBootTest(classes = SpringBootLotteryApplication.class)
+@SpringBootTest(classes = {SpringBootLotteryApplication.class, IntegrationConfiguration.class})
 @ActiveProfiles("integration")
 @AutoConfigureMockMvc
 @Testcontainers
@@ -30,6 +31,9 @@ public class BaseIntegrationTest {
 
     @Autowired
     public ObjectMapper objectMapper;
+
+    @Autowired
+    public AdjustableClock clock;
 
     @Container
     public static final MongoDBContainer mongoDBcontainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));

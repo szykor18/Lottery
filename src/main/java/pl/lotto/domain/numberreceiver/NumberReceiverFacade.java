@@ -2,7 +2,7 @@ package pl.lotto.domain.numberreceiver;
 
 import lombok.AllArgsConstructor;
 import pl.lotto.domain.drawdategenerator.DrawDateFacade;
-import pl.lotto.domain.numberreceiver.dto.InputNumbersResultDto;
+import pl.lotto.domain.numberreceiver.dto.NumberReceiverResultDto;
 import pl.lotto.domain.numberreceiver.dto.TicketDto;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -17,19 +17,20 @@ public class NumberReceiverFacade {
     private final HashGenerable hashGenerator;
     private final DrawDateFacade drawDateFacade;
 
-    public InputNumbersResultDto inputNumbers(Set<Integer> numbersFromUser) {
+    public NumberReceiverResultDto inputNumbers(Set<Integer> numbersFromUser) {
         List<ValidationResult> validationResultList = validator.validate(numbersFromUser);
         if (!validationResultList.isEmpty()) {
             String resultMessage = validator.createResultMessage();
-            return InputNumbersResultDto.builder()
+            return NumberReceiverResultDto.builder()
                     .ticketDto(null)
                     .message(resultMessage)
                     .build();
         }
         String hash = hashGenerator.getHash();
         LocalDateTime drawDate = drawDateFacade.getNextDrawDate();
-        Ticket savedTicket = repository.save(new Ticket(hash, drawDate, numbersFromUser));
-        return InputNumbersResultDto.builder()
+        //Ticket savedTicket = repository.save(new Ticket(hash, drawDate, numbersFromUser));
+        Ticket savedTicket = new Ticket(hash, drawDate, numbersFromUser);
+        return NumberReceiverResultDto.builder()
                 .ticketDto(TicketMapper.mapFromTicket(savedTicket))
                 .message(INPUT_SUCCESS.info)
                 .build();

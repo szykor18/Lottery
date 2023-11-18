@@ -5,7 +5,7 @@ import pl.lotto.domain.AdjustableClock;
 import pl.lotto.domain.drawdategenerator.DrawDateFacade;
 import pl.lotto.domain.drawdategenerator.DrawDateGenerable;
 import pl.lotto.domain.drawdategenerator.DrawDateGeneratorTestImpl;
-import pl.lotto.domain.numberreceiver.dto.InputNumbersResultDto;
+import pl.lotto.domain.numberreceiver.dto.NumberReceiverResultDto;
 import pl.lotto.domain.numberreceiver.dto.TicketDto;
 
 import java.time.LocalDateTime;
@@ -32,7 +32,7 @@ class NumberReceiverFacadeTest {
         //given
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6);
         //when
-        InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
         assertThat(result.message()).isEqualTo("SUCCESS");
     }
@@ -42,7 +42,7 @@ class NumberReceiverFacadeTest {
         //given
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5);
         //when
-        InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
         assertThat(result.message()).isEqualTo("YOU SHOULD GIVE 6 NUMBERS");
     }
@@ -52,7 +52,7 @@ class NumberReceiverFacadeTest {
         //given
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6, 7);
         //when
-        InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
         assertThat(result.message()).isEqualTo("YOU SHOULD GIVE 6 NUMBERS");
     }
@@ -62,7 +62,7 @@ class NumberReceiverFacadeTest {
         //given
         Set<Integer> numbersFromUser = Set.of(1, 2000, 3, 4, 5, 6);
         //when
-        InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         //then
         assertThat(result.message()).isEqualTo("YOU SHOULD GIVE NUMBERS FROM 1 TO 99");
     }
@@ -70,7 +70,7 @@ class NumberReceiverFacadeTest {
     public void should_return_save_to_database_when_user_gave_six_numbers() {
         //given
         Set<Integer> numbersFromUser = Set.of(1, 2, 3, 4, 5, 6);
-        InputNumbersResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
         LocalDateTime drawDate = LocalDateTime.of(2023,11,11,12,0,0);
         //when
         List<TicketDto> ticketDtos = numberReceiverFacade.retrieveAllTicketsByNextDrawDate(drawDate);
@@ -109,7 +109,7 @@ class NumberReceiverFacadeTest {
         //given
         Set<Integer> numbersFromUser = Set.of(1,2,3,4,5,6);
         clock.setClockToLocalDateTime(LocalDateTime.of(2023,11,05,15,00));
-        InputNumbersResultDto numbersResultDto = numberReceiverFacade.inputNumbers(numbersFromUser);
+        NumberReceiverResultDto numbersResultDto = numberReceiverFacade.inputNumbers(numbersFromUser);
         LocalDateTime drawDate = numbersResultDto.ticketDto().drawDate();
         //when
         List<TicketDto> allTicketsByDate = numberReceiverFacade.retrieveAllTicketsByNextDrawDate(drawDate.plusWeeks(1));
