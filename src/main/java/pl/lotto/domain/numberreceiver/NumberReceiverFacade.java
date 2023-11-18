@@ -48,8 +48,4 @@ public class NumberReceiverFacade {
         LocalDateTime nextDrawDate = drawDateFacade.getNextDrawDate();
         return retrieveAllTicketsByNextDrawDate(nextDrawDate);
     }
-
-    public LocalDateTime retrieveNextDrawDate() {
-        return drawDateFacade.getNextDrawDate();
-    }
 }
