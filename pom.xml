@@ -26,6 +26,7 @@
         <mockito-core.version>4.9.0</mockito-core.version>
         <wiremock-jre8.version>2.35.0</wiremock-jre8.version>
         <awaitility.version>4.2.0</awaitility.version>
+        <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
     </properties>
     <dependencies>
 <!--        TEST CONTAINERS-->
@@ -97,11 +98,18 @@
             <version>${wiremock-jre8.version}</version>
             <scope>test</scope>
         </dependency>
+<!--        AWAITILITY-->
         <dependency>
             <groupId>org.awaitility</groupId>
             <artifactId>awaitility</artifactId>
             <version>${awaitility.version}</version>
             <scope>test</scope>
+        </dependency>
+<!--        SWAGGER-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>${springfox-boot-starter.version}</version>
         </dependency>
     </dependencies>
     <build>
@@ -124,5 +132,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
