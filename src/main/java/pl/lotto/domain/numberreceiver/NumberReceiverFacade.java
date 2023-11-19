@@ -28,8 +28,7 @@ public class NumberReceiverFacade {
         }
         String hash = hashGenerator.getHash();
         LocalDateTime drawDate = drawDateFacade.getNextDrawDate();
-        //Ticket savedTicket = repository.save(new Ticket(hash, drawDate, numbersFromUser));
-        Ticket savedTicket = new Ticket(hash, drawDate, numbersFromUser);
+        Ticket savedTicket = repository.save(new Ticket(hash, drawDate, numbersFromUser));
         return NumberReceiverResultDto.builder()
                 .ticketDto(TicketMapper.mapFromTicket(savedTicket))
                 .message(INPUT_SUCCESS.info)

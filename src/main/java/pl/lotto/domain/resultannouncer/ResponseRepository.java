@@ -1,10 +1,9 @@
 package pl.lotto.domain.resultannouncer;
 
+import org.springframework.data.mongodb.repository.MongoRepository;
+
 import java.util.Optional;
 
-public interface ResponseRepository {
+public interface ResponseRepository extends MongoRepository<Response, String> {
     boolean existsById(String hash);
-    Optional<Response> findById(String hash);
-
-    Response save(Response response);
 }

@@ -11,20 +11,6 @@ import java.util.List;
 public class NumberReceiverFacadeConfiguration {
 
     @Bean
-    TicketRepository repository() {
-        return new TicketRepository() {
-            @Override
-            public Ticket save(Ticket ticket) {
-                return null;
-            }
-
-            @Override
-            public List<Ticket> findAllTicketsByDrawDate(LocalDateTime date) {
-                return null;
-            }
-        };
-    }
-    @Bean
     HashGenerable hashGenerable() {
         return new HashGenerator();
     }
