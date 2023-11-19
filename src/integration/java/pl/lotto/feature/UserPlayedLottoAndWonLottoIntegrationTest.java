@@ -1,12 +1,8 @@
 package pl.lotto.feature;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
-
-import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
-
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,18 +10,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultMatcher;
 import pl.lotto.BaseIntegrationTest;
 import pl.lotto.IntegrationConfiguration;
 import pl.lotto.SpringBootLotteryApplication;
 import pl.lotto.domain.numbergenerator.WinningNumbersGeneratorFacade;
 import pl.lotto.domain.numbergenerator.WinningNumbersNotFoundException;
 import pl.lotto.domain.numberreceiver.dto.NumberReceiverResultDto;
+import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerDto;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = {SpringBootLotteryApplication.class, IntegrationConfiguration.class}, properties = "scheduler.enabled=true")
@@ -64,7 +62,7 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
                 );
     //step 3: user made POST /inputNumbers with 6 numbers (1, 2, 3, 4, 5, 6) at 15-11-2023 11:00 and system returned OK(200) with message: “success” and Ticket (DrawDate:19.11.2022 12:00 (Saturday), TicketId: sampleTicketId)
         //given
-        ResultActions perform = mockMvc.perform(post("/inputNumbers")
+        ResultActions performPostInputNumbers = mockMvc.perform(post("/inputNumbers")
                 .content("""
                         {
                         "inputNumbers": [1,2,3,4,5,6]
@@ -72,7 +70,7 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
                         """.trim())
                 .contentType(MediaType.APPLICATION_JSON));
         //when
-        MvcResult mvcResult = perform.andExpect(status().isOk()).andReturn();
+        MvcResult mvcResult = performPostInputNumbers.andExpect(status().isOk()).andReturn();
         String json = mvcResult.getResponse().getContentAsString();
         NumberReceiverResultDto numberReceiverResultDto = objectMapper.readValue(json, NumberReceiverResultDto.class);
 
@@ -83,16 +81,32 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
         );
 
 
+    //step 4: user made GET /results/notExistingId and system returned 404(NOT_FOUND) and body with (message: Not found for id: notExistingId and status NOT_FOUND)
+        //given
 
-        //step 4: 3 days and 1 minute passed, and it is 1 minute after the draw date (19.11.2022 12:01)
+        //when
+        ResultActions performGetResultsWithNotExistingId = mockMvc.perform(get("/results/notExistingId"));
+        //then
+        performGetResultsWithNotExistingId.andExpect(status().isNotFound()).andExpect(
+                content().json("""
+                    
+                        {
+                        "message": "Not found id: notExistingId",
+                        "status": "NOT_FOUND"
+                        }
+                    """.trim()
+                )
+        );
+
+        //step 5: 3 days and 1 minute passed, and it is 1 minute after the draw date (19.11.2022 12:01)
         //given
         clock.advanceInTimeBy(Duration.ofDays(3));
         clock.advanceInTimeBy(Duration.ofMinutes(1));
 
 
-    //step 5: system generated result for TicketId: sampleTicketId with draw date 19.11.2022 12:00, and saved it with 6 hits
-    //step 6: 3 hours passed, and it is 1 minute after announcement time (19.11.2022 15:01)
-    //step 7: user made GET /results/sampleTicketId and system returned 200 (OK)
+    //step 6: system generated result for TicketId: sampleTicketId with draw date 19.11.2022 12:00, and saved it with 6 hits
+    //step 7: 3 hours passed, and it is 1 minute after announcement time (19.11.2022 15:01)
+    //step 8: user made GET /results/sampleTicketId and system returned 200 (OK)
 
     }
 
