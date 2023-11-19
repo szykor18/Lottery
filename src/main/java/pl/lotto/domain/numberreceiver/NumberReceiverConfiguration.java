@@ -4,11 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.lotto.domain.drawdategenerator.DrawDateFacade;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Configuration
-public class NumberReceiverFacadeConfiguration {
+public class NumberReceiverConfiguration {
 
     @Bean
     HashGenerable hashGenerable() {
