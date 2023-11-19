@@ -5,6 +5,8 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +24,7 @@ import pl.lotto.domain.numberreceiver.dto.NumberReceiverResultDto;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -70,9 +73,16 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
                 .contentType(MediaType.APPLICATION_JSON));
         //when
         MvcResult mvcResult = perform.andExpect(status().isOk()).andReturn();
-        String json = mvcResult.getRequest().getContentAsString();
+        String json = mvcResult.getResponse().getContentAsString();
         NumberReceiverResultDto numberReceiverResultDto = objectMapper.readValue(json, NumberReceiverResultDto.class);
-        assertThat(numberReceiverResultDto.ticketDto().drawDate()).isEqualTo(drawDate);
+
+        assertAll(
+            () -> assertThat(numberReceiverResultDto.ticketDto().drawDate()).isEqualTo(drawDate),
+            () -> assertThat(numberReceiverResultDto.message()).isEqualTo("SUCCESS"),
+            () -> assertThat(numberReceiverResultDto.ticketDto().hash()).isNotNull()
+        );
+
+
 
         //step 4: 3 days and 1 minute passed, and it is 1 minute after the draw date (19.11.2022 12:01)
         //given

@@ -1,6 +1,6 @@
 package pl.lotto.domain.numberreceiver;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -13,7 +13,7 @@ class NumberValidator {
     List<ValidationResult> errors;
 
     List<ValidationResult> validate(Set<Integer> numbersFromUser) {
-        errors = new ArrayList<>();
+        errors = new LinkedList<>();
         if (!areAllNumbersInRange(numbersFromUser)) {
             errors.add(ValidationResult.NOT_IN_RANGE);
         }
