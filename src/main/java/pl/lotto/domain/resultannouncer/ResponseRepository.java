@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ResponseRepository extends MongoRepository<Response, String> {
-    boolean existsById(String hash);
+    boolean existsByHash(String hash);
 }

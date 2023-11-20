@@ -16,17 +16,19 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <sap.cloud.security.version>3.0.1</sap.cloud.security.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <testcontainers.version>1.17.4</testcontainers.version>
+        <testcontainers.version>1.18.3</testcontainers.version>
         <assertj-core.version>3.23.1</assertj-core.version>
         <junit-jupiter-engine.version>5.9.1</junit-jupiter-engine.version>
-        <lombok.version>1.18.22</lombok.version>
+        <lombok.version>1.18.24</lombok.version>
         <mockito-core.version>4.9.0</mockito-core.version>
         <wiremock-jre8.version>2.35.0</wiremock-jre8.version>
         <awaitility.version>4.2.0</awaitility.version>
-        <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
+        <swagger.version>2.0.2</swagger.version>
     </properties>
     <dependencies>
 <!--        TEST CONTAINERS-->
@@ -83,13 +85,13 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
 <!--      WIREMOCK-->
         <dependency>
@@ -105,12 +107,13 @@
             <version>${awaitility.version}</version>
             <scope>test</scope>
         </dependency>
-<!--        SWAGGER-->
+<!--        SWAGGER http://localhost:8080/swagger-ui/index.html#/ -->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>${springfox-boot-starter.version}</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${swagger.version}</version>
         </dependency>
+
     </dependencies>
     <build>
         <plugins>
@@ -126,8 +129,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
-                    <proc>none</proc>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
         </plugins>

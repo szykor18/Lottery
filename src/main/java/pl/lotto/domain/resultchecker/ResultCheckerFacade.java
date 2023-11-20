@@ -37,7 +37,7 @@ public class ResultCheckerFacade {
     }
     public PlayerDto findPlayerByHash(String hash) {
         Player playerByHash = playerRepository.findByHash(hash)
-                .orElseThrow(() -> new PlayerNotFoundByHashException("not found"));
+                .orElseThrow(() -> new PlayerNotFoundByHashException(hash));
         return mapToPlayerDto(playerByHash);
     }
 }

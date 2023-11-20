@@ -16,7 +16,7 @@ public class ResponseRepositoryTestImpl implements ResponseRepository{
     private Map<String, Response> responsesDatabase = new ConcurrentHashMap<>();
 
     @Override
-    public boolean existsById(String hash) {
+    public boolean existsByHash(String hash) {
         return responsesDatabase.containsKey(hash);
     }
 
@@ -79,6 +79,11 @@ public class ResponseRepositoryTestImpl implements ResponseRepository{
     @Override
     public Optional<Response> findById(String hash) {
         return Optional.ofNullable(responsesDatabase.get(hash));
+    }
+
+    @Override
+    public boolean existsById(String s) {
+        return false;
     }
 
     @Override
