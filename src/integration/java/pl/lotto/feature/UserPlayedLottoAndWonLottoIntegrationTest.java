@@ -15,6 +15,7 @@ import pl.lotto.IntegrationConfiguration;
 import pl.lotto.SpringBootLotteryApplication;
 import pl.lotto.domain.numbergenerator.WinningNumbersGeneratorFacade;
 import pl.lotto.domain.numbergenerator.WinningNumbersNotFoundException;
+import pl.lotto.domain.numberreceiver.TicketRepository;
 import pl.lotto.domain.numberreceiver.dto.NumberReceiverResultDto;
 import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerDto;
 
@@ -31,6 +32,7 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
 
     @Autowired
     WinningNumbersGeneratorFacade winningNumbersGeneratorFacade;
+
     @Test
     public void should_user_win_and_system_should_generate_winners() throws Exception {
 
@@ -81,6 +83,7 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
         );
 
 
+
     //step 4: user made GET /results/notExistingId and system returned 404(NOT_FOUND) and body with (message: Not found for id: notExistingId and status NOT_FOUND)
         //given
 
@@ -90,7 +93,7 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
         performGetResultsWithNotExistingId.andExpect(status().isNotFound()).andExpect(
                 content().json("""
                         {
-                        "message": "Not found id: notExistingId",
+                        "message": "Not found for id: notExistingId",
                         "status": "NOT_FOUND"
                         }
                     """.trim()
