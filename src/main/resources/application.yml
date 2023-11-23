@@ -8,8 +8,10 @@ spring:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
 lotto:
+  result-checker:
+    frequency: "0 55 11 * * 6"
   number-generator:
-    lotteryRunFrequency: 0 0 12 * * 6
+    frequency: "0 0 12 * * 6"
     facade:
       minBound: 1
       maxBound: 99
@@ -21,6 +23,3 @@ lotto:
           port: 9090
           connectionTimeout: 5000
           readTimeout: 5000
-
-scheduler:
-  enabled: true
