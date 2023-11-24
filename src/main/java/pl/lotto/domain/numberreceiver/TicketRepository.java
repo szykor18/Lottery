@@ -1,10 +1,13 @@
 package pl.lotto.domain.numberreceiver;
 
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface TicketRepository {
-    Ticket save(Ticket ticket);
+@Repository
+public interface TicketRepository extends MongoRepository<Ticket, String> {
 
     List<Ticket> findAllTicketsByDrawDate(LocalDateTime date);
 }

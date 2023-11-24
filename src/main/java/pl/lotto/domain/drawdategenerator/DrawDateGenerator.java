@@ -1,27 +1,24 @@
 package pl.lotto.domain.drawdategenerator;
 
-import java.time.Clock;
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import lombok.AllArgsConstructor;
+
+import java.time.*;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 
+@AllArgsConstructor
 class DrawDateGenerator implements DrawDateGenerable{
     private final Clock clock;
     private static final LocalTime DRAW_TIME = LocalTime.of(12,0,0);
     private static final TemporalAdjuster NEXT_DRAW_DAY = TemporalAdjusters.next(DayOfWeek.SATURDAY);
-    public DrawDateGenerator(Clock clock) {
-        this.clock = clock;
-    }
     @Override
     public LocalDateTime getNextDrawDate() {
         LocalDateTime currentDateTime = LocalDateTime.now(clock);
         if (isSaturdayAndBeforeNoon(currentDateTime)) {
             return LocalDateTime.of(currentDateTime.toLocalDate(), DRAW_TIME);
         }
-        LocalDateTime drawDate = currentDateTime.with(NEXT_DRAW_DAY);
-        return LocalDateTime.of(drawDate.toLocalDate(), DRAW_TIME);
+        LocalDate drawDate = currentDateTime.toLocalDate().with(NEXT_DRAW_DAY);
+        return LocalDateTime.of(drawDate, DRAW_TIME);
     }
 
     private boolean isSaturdayAndBeforeNoon(LocalDateTime currentDateTime) {
