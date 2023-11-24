@@ -1,24 +1,20 @@
 package pl.lotto.feature;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import pl.lotto.BaseIntegrationTest;
 import pl.lotto.SpringBootLotteryApplication;
-import pl.lotto.domain.numbergenerator.RandomNumbersGenerable;
 import pl.lotto.domain.numbergenerator.WinningNumbersGeneratorFacade;
 import pl.lotto.domain.numbergenerator.WinningNumbersNotFoundException;
-import pl.lotto.domain.numbergenerator.dto.SixRandomNumbersDto;
-import pl.lotto.domain.numbergenerator.dto.WinningNumbersDto;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-@SpringBootTest(classes = SpringBootLotteryApplication.class, properties = "scheduler.enabled = true")
+@SpringBootTest(classes = SpringBootLotteryApplication.class, properties = "scheduler.enabled=true")
 public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
@@ -39,9 +35,8 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
 
     //step 2: system fetched winning numbers for draw date: 18.11.2023 12:00
         //given
-        LocalDateTime drawDate = LocalDateTime.of(2023,11,15,12,0,0);
-
-        //when
+        LocalDateTime drawDate = LocalDateTime.of(2023,11,18,12,0,0);
+        //when&&then
         await()
                 .atMost(Duration.ofSeconds(20))
                 .pollInterval(Duration.ofSeconds(1))
@@ -53,9 +48,6 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
                             }
                         }
                 );
-
-        //then
-
 
     //step 3: user made POST /inputNumbers with 6 numbers (1, 2, 3, 4, 5, 6) at 16-11-2022 10:00 and system returned OK(200) with message: “success” and Ticket (DrawDate:19.11.2022 12:00 (Saturday), TicketId: sampleTicketId)
     //step 4: 3 days and 1 minute passed, and it is 1 minute after the draw date (19.11.2022 12:01)
