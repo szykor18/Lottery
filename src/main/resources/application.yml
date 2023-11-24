@@ -5,6 +5,7 @@ spring:
 
 lotto:
   number-generator:
+    lotteryRunFrequency: 0 0 12 * * 6
     facade:
       minBound: 1
       maxBound: 99
@@ -16,3 +17,6 @@ lotto:
           port: 9090
           connectionTimeout: 5000
           readTimeout: 5000
+
+scheduler:
+  enabled: true

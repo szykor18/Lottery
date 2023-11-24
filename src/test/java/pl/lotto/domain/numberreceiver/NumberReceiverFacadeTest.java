@@ -22,7 +22,7 @@ class NumberReceiverFacadeTest {
     DrawDateGenerable drawDateGenerator = new DrawDateGeneratorTestImpl(clock);
     NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
             new NumberValidator(),
-            new InMemoryNumberReceiverRepositoryTestImpl(),
+            new InMemoryTicketRepositoryTestImpl(),
             new HashGenerator(),
             new DrawDateFacade(drawDateGenerator)
     );

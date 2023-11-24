@@ -13,7 +13,7 @@ import static pl.lotto.domain.numberreceiver.ValidationResult.INPUT_SUCCESS;
 @AllArgsConstructor
 public class NumberReceiverFacade {
     private final NumberValidator validator;
-    private final NumberReceiverRepository repository;
+    private final TicketRepository repository;
     private final HashGenerable hashGenerator;
     private final DrawDateFacade drawDateFacade;
 
