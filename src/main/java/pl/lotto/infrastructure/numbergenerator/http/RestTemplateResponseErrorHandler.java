@@ -11,7 +11,7 @@ import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
 public class RestTemplateResponseErrorHandler extends DefaultResponseErrorHandler {
 
     @Override
-    public void handleError(ClientHttpResponse httpResponse) throws IOException{
+    public void handleError(ClientHttpResponse httpResponse) throws IOException {
         HttpStatus statusCode = (HttpStatus) httpResponse.getStatusCode();
         final HttpStatus.Series series = statusCode.series();
         if (series == SERVER_ERROR) {

@@ -15,13 +15,14 @@ public class RandomGeneratorClientConfig {
 
     @Autowired
     private RandomNumberGeneratorRestTemplateConfigurationProperties properties;
+
     @Bean
     public RestTemplateResponseErrorHandler restTemplateResponseErrorHandler() {
         return new RestTemplateResponseErrorHandler();
     }
 
     @Bean
-    public RestTemplate restTemplate(RestTemplateResponseErrorHandler restTemplateResponseErrorHandler) {
+    public RestTemplate restTemplate(RestTemplateResponseErrorHandler restTemplateResponseErrorHandler, RandomNumberGeneratorRestTemplateConfigurationProperties properties) {
         return new RestTemplateBuilder()
                 .errorHandler(restTemplateResponseErrorHandler)
                 .setConnectTimeout(Duration.ofMillis(properties.connectionTimeout()))
@@ -30,7 +31,7 @@ public class RandomGeneratorClientConfig {
     }
 
     @Bean
-    public RandomNumbersGenerable remoteNumberGeneratorClient(RestTemplate restTemplate) {
+    public RandomNumbersGenerable remoteNumberGeneratorClient(RestTemplate restTemplate, RandomNumberGeneratorRestTemplateConfigurationProperties properties) {
         return new RandomNumberGeneratorRestTemplate(restTemplate, properties.uri(), properties.port());
     }
 }
