@@ -2,6 +2,9 @@ package pl.lotto.domain.numberreceiver;
 
 import org.junit.jupiter.api.Test;
 import pl.lotto.domain.AdjustableClock;
+import pl.lotto.domain.drawdategenerator.DrawDateFacade;
+import pl.lotto.domain.drawdategenerator.DrawDateGenerable;
+import pl.lotto.domain.drawdategenerator.DrawDateGeneratorTestImpl;
 import pl.lotto.domain.numberreceiver.dto.InputNumbersResultDto;
 import pl.lotto.domain.numberreceiver.dto.TicketDto;
 
@@ -16,11 +19,12 @@ class NumberReceiverFacadeTest {
     ZoneId warsawZone = ZoneId.of("Europe/Warsaw");
     AdjustableClock clock = new AdjustableClock(LocalDateTime.of(2023,11,4,14,0,0)
             .atZone(warsawZone).toInstant(), warsawZone);
+    DrawDateGenerable drawDateGenerator = new DrawDateGeneratorTestImpl(clock);
     NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade(
             new NumberValidator(),
             new InMemoryNumberReceiverRepositoryTestImpl(),
             new HashGenerator(),
-            new DrawDateGenerator(clock)
+            new DrawDateFacade(drawDateGenerator)
     );
 
     @Test
@@ -88,38 +92,6 @@ class NumberReceiverFacadeTest {
         //then
         assertThat(response).hasSize(36);
         assertThat(response).isNotNull();
-    }
-    @Test
-    public void should_return_correct_draw_date() {
-        //given
-        Set<Integer> numbersFromUser = Set.of(1,2,3,4,5,6);
-        //when
-        LocalDateTime localDateTime = numberReceiverFacade.inputNumbers(numbersFromUser).ticketDto().drawDate();
-        //then
-        LocalDateTime expectedDate = LocalDateTime.of(2023, 11, 11, 12, 0 ,0);
-        assertThat(localDateTime).isEqualTo(expectedDate);
-    }
-    @Test
-    public void should_return_next_Saturday_when_date_is_Saturday_noon() {
-        //given
-        Set<Integer> numbersFromUser = Set.of(1,2,3,4,5,6);
-        clock.setClockToLocalDateTime(LocalDateTime.of(2023,11,11,12,00));
-        //when
-        LocalDateTime localDateTime = numberReceiverFacade.inputNumbers(numbersFromUser).ticketDto().drawDate();
-        //then
-        LocalDateTime expectedDate = LocalDateTime.of(2023,11,18,12,0,0);
-        assertThat(localDateTime).isEqualTo(expectedDate);
-    }
-    @Test
-    public void should_return_next_Saturday_when_date_is_Saturday_afternoon() {
-        //given
-        Set<Integer> numbersFromUser = Set.of(1,2,3,4,5,6);
-        clock.setClockToLocalDateTime(LocalDateTime.of(2023,11,11,16,00));
-        //when
-        LocalDateTime localDateTime = numberReceiverFacade.inputNumbers(numbersFromUser).ticketDto().drawDate();
-        //then
-        LocalDateTime expectedDate = LocalDateTime.of(2023,11,18,12,0,0);
-        assertThat(localDateTime).isEqualTo(expectedDate);
     }
     @Test
     public void should_return_empty_collections_if_there_are_no_tickets() {
