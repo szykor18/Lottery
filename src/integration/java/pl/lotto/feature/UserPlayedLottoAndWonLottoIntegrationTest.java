@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import pl.lotto.BaseIntegrationTest;
 import pl.lotto.domain.numbergenerator.RandomNumbersGenerable;
+import pl.lotto.domain.numbergenerator.WinningNumbersGeneratorFacade;
 import pl.lotto.domain.numbergenerator.dto.SixRandomNumbersDto;
+import pl.lotto.domain.numbergenerator.dto.WinningNumbersDto;
 
 public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
-    RandomNumbersGenerable randomNumbersGenerable;
+    WinningNumbersGeneratorFacade winningNumbersGeneratorFacade;
     @Test
     public void should_user_win_and_system_should_generate_winners() {
 
@@ -26,7 +28,8 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
                                         """.trim()
                                 )));
         //when
-        SixRandomNumbersDto sixRandomNumbersDto = randomNumbersGenerable.generateSixRandomNumbers();
+        WinningNumbersDto winningNumbersDto = winningNumbersGeneratorFacade.generateWinningNumbers();
+        System.out.println(winningNumbersDto);
         //then
 
 

@@ -5,8 +5,14 @@ spring:
 
 lotto:
   number-generator:
+    facade:
+      minBound: 1
+      maxBound: 99
+      count: 25
     http:
       client:
         config:
           uri: http://ec2-3-120-147-150.eu-central-1.compute.amazonaws.com
           port: 9090
+          connectionTimeout: 5000
+          readTimeout: 5000
