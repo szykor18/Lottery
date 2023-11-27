@@ -46,6 +46,21 @@ public class RandomNumberGeneratorRestTemplate implements RandomNumbersGenerable
         }
     }
 
+    private ResponseEntity<List<Integer>> makeGetRequestFromClient(HttpEntity<HttpHeaders> requestEntity, int minBound, int maxBound, int count) {
+        final String url = UriComponentsBuilder.fromHttpUrl(getUrlForService(RANDOM_NUMBER_SERVICE_PATH))
+                .queryParam("min", minBound)
+                .queryParam("max", maxBound)
+                .queryParam("count", count)
+                .toUriString();
+        ResponseEntity<List<Integer>> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                });
+        return response;
+    }
+
     private Set<Integer> getSixDistinctNumbers(ResponseEntity<List<Integer>> response) {
         List<Integer> fetchedNumbers = response.getBody();
         if (fetchedNumbers == null) {
@@ -57,20 +72,6 @@ public class RandomNumberGeneratorRestTemplate implements RandomNumbersGenerable
         return distinctNumbers.stream()
                 .limit(VALID_AMOUNT_OF_NUMBERS)
                 .collect(Collectors.toSet());
-    }
-
-    private ResponseEntity<List<Integer>> makeGetRequestFromClient(HttpEntity<HttpHeaders> requestEntity, int minBound, int maxBound, int count) {
-        final String url = UriComponentsBuilder.fromHttpUrl(getUrlForService(RANDOM_NUMBER_SERVICE_PATH))
-                .queryParam("min", minBound)
-                .queryParam("max", maxBound)
-                .queryParam("count", count)
-                .toUriString();
-        return restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                requestEntity,
-                new ParameterizedTypeReference<>() {
-                });
     }
 
     private String getUrlForService(String service) {
