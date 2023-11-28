@@ -1,6 +1,5 @@
 lotto:
   number-generator:
-    lotteryRunFrequency: "*/5 * * * * *"
-
-scheduler:
-  enabled: false
+    frequency: "*/5 * * * * *"
+  result-checker:
+    frequency: "*/7 * * * * *"
