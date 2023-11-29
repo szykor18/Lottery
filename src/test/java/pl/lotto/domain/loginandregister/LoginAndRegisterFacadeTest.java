@@ -2,6 +2,7 @@ package pl.lotto.domain.loginandregister;
 
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.authentication.BadCredentialsException;
 import pl.lotto.domain.loginandregister.dto.RegisterRequestDto;
 import pl.lotto.domain.loginandregister.dto.RegisterResultDto;
 import pl.lotto.domain.loginandregister.dto.UserDto;
@@ -53,8 +54,8 @@ public class LoginAndRegisterFacadeTest {
         Throwable throwable = catchThrowable(() -> loginAndRegisterFacade.findByUsername(username));
         //then
         AssertionsForClassTypes.assertThat(throwable)
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("username not found");
+                .isInstanceOf(BadCredentialsException.class)
+                .hasMessage("Username not found");
     }
 
 

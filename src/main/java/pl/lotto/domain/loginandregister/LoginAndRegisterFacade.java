@@ -1,6 +1,7 @@
 package pl.lotto.domain.loginandregister;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import pl.lotto.domain.loginandregister.dto.RegisterRequestDto;
 import pl.lotto.domain.loginandregister.dto.RegisterResultDto;
 import pl.lotto.domain.loginandregister.dto.UserDto;
@@ -12,7 +13,7 @@ public class LoginAndRegisterFacade {
     public UserDto findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .map(UserMapper::mapFromUserToUserDto)
-                .orElseThrow(() -> new RuntimeException("username not found"));
+                .orElseThrow(() -> new BadCredentialsException("Username not found"));
     }
 
     public RegisterResultDto registerUser(RegisterRequestDto registerRequestDto) {
