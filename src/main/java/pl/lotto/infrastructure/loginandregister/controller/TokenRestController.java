@@ -17,7 +17,7 @@ public class TokenRestController {
 
     @PostMapping("/token")
     public ResponseEntity<JwtResponseDto> loginAndRetrieveToken(@RequestBody @Valid TokenRequestDto tokenRequestDto) {
-        JwtResponseDto jwtResponseDto = jwtAuthenticator.authenticateToken(tokenRequestDto);
+        JwtResponseDto jwtResponseDto = jwtAuthenticator.authenticateAndGenerateToken(tokenRequestDto);
         return ResponseEntity.ok(jwtResponseDto);
     }
 }

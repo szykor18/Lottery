@@ -20,7 +20,7 @@ public class JwtAuthenticator {
     private final Clock clock;
     private final JwtConfigurationProperties properties;
 
-    public JwtResponseDto authenticateToken(TokenRequestDto tokenRequestDto) {
+    public JwtResponseDto authenticateAndGenerateToken(TokenRequestDto tokenRequestDto) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 tokenRequestDto.username(), tokenRequestDto.password()));
         User user = (User) authenticate.getPrincipal();
@@ -33,12 +33,12 @@ public class JwtAuthenticator {
         String secretKey = properties.secretKey();
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         Instant now = LocalDateTime.now(clock).toInstant(ZoneOffset.UTC);
-        Instant expireAt = now.plus(Duration.ofDays(properties.expiresAt()));
+        Instant expiresAt = now.plus(Duration.ofDays(properties.expirationDays()));
         String issuer = properties.issuer();
         return JWT.create()
                 .withSubject(user.getUsername())
                 .withIssuedAt(now)
-                .withExpiresAt(expireAt)
+                .withExpiresAt(expiresAt)
                 .withIssuer(issuer)
                 .sign(algorithm);
     }

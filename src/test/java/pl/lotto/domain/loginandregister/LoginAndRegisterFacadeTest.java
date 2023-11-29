@@ -55,7 +55,7 @@ public class LoginAndRegisterFacadeTest {
         //then
         AssertionsForClassTypes.assertThat(throwable)
                 .isInstanceOf(BadCredentialsException.class)
-                .hasMessage("Username not found");
+                .hasMessage("randomUsername");
     }
 
 

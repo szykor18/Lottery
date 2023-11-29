@@ -13,7 +13,7 @@ public class LoginAndRegisterFacade {
     public UserDto findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .map(UserMapper::mapFromUserToUserDto)
-                .orElseThrow(() -> new BadCredentialsException("Username not found"));
+                .orElseThrow(() -> new BadCredentialsException(username));
     }
 
     public RegisterResultDto registerUser(RegisterRequestDto registerRequestDto) {
