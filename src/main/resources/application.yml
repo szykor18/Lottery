@@ -23,3 +23,9 @@ lotto:
           port: 9090
           connectionTimeout: 5000
           readTimeout: 5000
+
+jwt:
+  authentication:
+    secret-key: ${SECRET_KEY}
+    expires-at: 30
+    issuer: lotto-backend-service

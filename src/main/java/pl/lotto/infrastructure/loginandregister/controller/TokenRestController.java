@@ -1,5 +1,6 @@
 package pl.lotto.infrastructure.loginandregister.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,7 @@ public class TokenRestController {
     private final JwtAuthenticator jwtAuthenticator;
 
     @PostMapping("/token")
-    public ResponseEntity<JwtResponseDto> loginAndRetrieveToken(@RequestBody TokenRequestDto tokenRequestDto) {
+    public ResponseEntity<JwtResponseDto> loginAndRetrieveToken(@RequestBody @Valid TokenRequestDto tokenRequestDto) {
         JwtResponseDto jwtResponseDto = jwtAuthenticator.authenticateToken(tokenRequestDto);
         return ResponseEntity.ok(jwtResponseDto);
     }

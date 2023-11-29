@@ -18,6 +18,7 @@ import java.time.*;
 public class JwtAuthenticator {
     private final AuthenticationManager authenticationManager;
     private final Clock clock;
+    private final JwtConfigurationProperties properties;
 
     public JwtResponseDto authenticateToken(TokenRequestDto tokenRequestDto) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -29,11 +30,11 @@ public class JwtAuthenticator {
     }
 
     private String createToken(User user) {
-        String secretKey = "secret";
+        String secretKey = properties.secretKey();
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         Instant now = LocalDateTime.now(clock).toInstant(ZoneOffset.UTC);
-        Instant expireAt = now.plus(Duration.ofDays(30));
-        String issuer = "lotto-backend-service";
+        Instant expireAt = now.plus(Duration.ofDays(properties.expiresAt()));
+        String issuer = properties.issuer();
         return JWT.create()
                 .withSubject(user.getUsername())
                 .withIssuedAt(now)

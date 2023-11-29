@@ -1,5 +1,6 @@
 package pl.lotto.infrastructure.loginandregister.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class RegisterRestController {
     private final PasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResultDto> registerUser(@RequestBody RegisterRequestDto registerRequest) {
+    public ResponseEntity<RegisterResultDto> registerUser(@RequestBody @Valid RegisterRequestDto registerRequest) {
         String username = registerRequest.username();
         String password = bCryptPasswordEncoder.encode(registerRequest.password());
         RegisterResultDto registerResult = loginAndRegisterFacade.registerUser(
