@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import pl.lotto.BaseIntegrationTest;
+import pl.lotto.domain.loginandregister.dto.RegisterResultDto;
 import pl.lotto.domain.numbergenerator.WinningNumbersGeneratorFacade;
 import pl.lotto.domain.numbergenerator.WinningNumbersNotFoundException;
 import pl.lotto.domain.numberreceiver.dto.NumberReceiverResultDto;
@@ -65,8 +66,67 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
                             }
                         }
                 );
-        //step 3: user made POST /inputNumbers with 6 numbers (1, 2, 3, 4, 5, 6) at 15-11-2023 11:00 and system returned OK(200) with message: “success” and Ticket (DrawDate:19.11.2022 12:00 (Saturday), TicketId: sampleTicketId)
-        //given
+
+
+        //   step 3: user tried to get JWT token by requesting POST /token with username=someUser, password=somePassword and system returned UNAUTHORIZED(401)
+        //given && when
+        ResultActions performLoginBeforeRegistration = mockMvc.perform(post("/token")
+                .content("""
+                        {
+                        "username": "someUser",
+                        "password": "somePassword"
+                        }
+                        """.trim())
+                .contentType(MediaType.APPLICATION_JSON_VALUE));
+        //then
+        performLoginBeforeRegistration
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().json(
+                        """
+                        {
+                        "message": "Bad Credentials",
+                        "status": "UNAUTHORIZED"
+                        }
+                        """.trim()
+                ));
+
+
+        //step 4: user made POST /inputNumbers with 6 numbers (1, 2, 3, 4, 5, 6) at 15-11-2023 11:00 and system returned FORBIDDEN(403)
+            //given && when
+            ResultActions performPostInputNumbersWithoutAuthorization = mockMvc.perform(post("/inputNumbers")
+                .content("""
+                        {
+                        "inputNumbers": [1,2,3,4,5,6]
+                        }
+                        """.trim())
+                .contentType(MediaType.APPLICATION_JSON));
+            //when
+        performPostInputNumbersWithoutAuthorization.andExpect(status().isForbidden());
+
+
+        //   step 5: user made POST /register with username=someUser, password=somePassword and system registered user with status OK(200)
+        //given && when
+        ResultActions performRegister = mockMvc.perform(post("/register")
+                .content("""
+                        {
+                        "username": "someUser",
+                        "password": "somePassword"
+                        }
+                        """.trim())
+                .contentType(MediaType.APPLICATION_JSON_VALUE));
+        //then
+        MvcResult mvcResultRegistration = performRegister.andExpect(status().isCreated()).andReturn();
+        String jsonResultRegistration = mvcResultRegistration.getResponse().getContentAsString();
+        RegisterResultDto registerResultDto = objectMapper.readValue(jsonResultRegistration, RegisterResultDto.class);
+        assertAll(
+                () -> assertThat(registerResultDto.username()).isEqualTo("someUser"),
+                () -> assertThat(registerResultDto.isCreated()).isTrue(),
+                () -> assertThat(registerResultDto.id()).isNotNull()
+        );
+
+
+        //step 6: user made POST /inputNumbers with 6 numbers (1, 2, 3, 4, 5, 6) at 15-11-2023 11:00 and system returned OK(200) with message: “success” and Ticket (DrawDate:19.11.2022 12:00 (Saturday), TicketId: sampleTicketId)
+        //given && when
         ResultActions performPostInputNumbers = mockMvc.perform(post("/inputNumbers")
                 .content("""
                         {
@@ -74,7 +134,7 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
                         }
                         """.trim())
                 .contentType(MediaType.APPLICATION_JSON));
-        //when
+        //then
         MvcResult mvcResult = performPostInputNumbers.andExpect(status().isOk()).andReturn();
         String json = mvcResult.getResponse().getContentAsString();
         NumberReceiverResultDto numberReceiverResultDto = objectMapper.readValue(json, NumberReceiverResultDto.class);
@@ -86,7 +146,7 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
         );
 
 
-        //step 4: user made GET /results/notExistingId and system returned 404(NOT_FOUND) and body with (message: Not found for id: notExistingId and status NOT_FOUND)
+        //step 4: user made GET /results/notExisting and system returned 404(NOT_FOUND) and body with (message: Not found for id: notExistingId and status NOT_FOUND)
         //given && when
         ResultActions performGetResultsWithNotExistingId = mockMvc.perform(get("/results/notExistingId"));
         //then
