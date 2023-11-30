@@ -1,5 +1,4 @@
-# Lottery 
-## (backend project)
+# Lottery (backend project)
 
 ## Functionalities of the Lottery Application
 - Ticket generating from user input numbers
