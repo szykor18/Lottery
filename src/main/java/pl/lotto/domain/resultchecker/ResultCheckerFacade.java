@@ -1,12 +1,15 @@
 package pl.lotto.domain.resultchecker;
 
 import lombok.AllArgsConstructor;
+import pl.lotto.domain.drawdategenerator.DrawDateFacade;
 import pl.lotto.domain.numbergenerator.WinningNumbersGeneratorFacade;
 import pl.lotto.domain.numbergenerator.dto.WinningNumbersDto;
 import pl.lotto.domain.numberreceiver.NumberReceiverFacade;
 import pl.lotto.domain.numberreceiver.dto.TicketDto;
 import pl.lotto.domain.resultchecker.dto.PlayerDto;
 import pl.lotto.domain.resultchecker.dto.PlayersResultsDto;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import static pl.lotto.domain.resultchecker.ResultMapper.*;
