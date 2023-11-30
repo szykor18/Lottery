@@ -1,18 +1,16 @@
 # Lottery (backend project)
 
 
-Lottery is an online version of the classic number lottery-Lotto. Users select 6 unique numbers from 1 to 99 to receive a special ticket ID. Winners are determined weekly by matching at least 3 numbers. Results, user tickets, and winning numbers are stored in a MongoDB database using SpringData. A scheduled lottery draw occurs weekly (every Saturday at 12:00), processing all tickets to identify winners. Users can check their results and claim their prizes using their unique ticket ID.
-
-Key features that distinguish this application:
-*User's Input Numbers Validation*
-*Date Information for the Drawing*
-*Unique Identifier Information*
-*Checking Win Status*
-*Integration with Remote HTTP Server for Winning Numbers*
-*Scheduled Saturday Drawings at 12:00*
-*Caching Mechanism*
-*User Registration*
-*JWT Token for Access*
+Lottery is an online version of the classic number lottery-Lotto. Users select 6 unique numbers from 1 to 99 to receive a special ticket ID. Winners are determined weekly by matching at least 3 numbers. Results, user tickets, and winning numbers are stored in a MongoDB database using SpringData. A scheduled lottery draw occurs weekly (every Saturday at 12:00), processing all tickets to identify winners. Users can check their results and claim their prizes using their unique ticket ID. Key features that distinguish this application:
+- *User's Input Numbers Validation*
+- *Date Information for the Drawing*
+- *Unique Identifier Information*
+- *Checking Win Status*
+- *Integration with Remote HTTP Server for Winning Numbers*
+- *Scheduled Saturday Drawings at 12:00*
+- *Caching Mechanism*
+- *User Registration*
+- *JWT Token for Access*
 
 
 > AUTHOR: SZYMON KORNIK <br>
