@@ -2,6 +2,7 @@ package pl.lotto.apivalidationerror;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import pl.lotto.BaseIntegrationTest;
@@ -14,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ApiValidationFailedIntegrationTest extends BaseIntegrationTest {
 
     @Test
+    @WithMockUser
     public void should_return_400_bad_request_when_input_numbers_is_null_and_empty() throws Exception {
         //given && when
         ResultActions performPostWithNullAndEmptyInputNumbers = mockMvc.perform(post("/inputNumbers")
@@ -35,6 +37,7 @@ public class ApiValidationFailedIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
+    @WithMockUser
     public void should_return_400_bad_request_when_input_numbers_is_empty() throws Exception {
         //given && when
         ResultActions performPostWithEmptyInputNumbers = mockMvc.perform(post("/inputNumbers")

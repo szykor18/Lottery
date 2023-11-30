@@ -29,7 +29,6 @@ public class ResultCheckerFacade {
         }
         List<Player> players = winnersRetriever.retrieveWinners(tickets, winningNumbers);
         playerRepository.saveAll(players);
-
         return PlayersResultsDto.builder()
                 .results(mapPlayerToResults(players))
                 .message("succeed to retrieve winners")

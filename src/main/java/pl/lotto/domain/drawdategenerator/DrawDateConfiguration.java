@@ -1,6 +1,7 @@
 package pl.lotto.domain.drawdategenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import java.time.*;
 
@@ -16,6 +17,7 @@ public class DrawDateConfiguration {
         return new DrawDateGenerator(clock());
     }
     @Bean
+    @Primary
     Clock clock() {
         return Clock.systemUTC();
     }
