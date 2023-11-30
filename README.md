@@ -1,14 +1,9 @@
 # Lottery (backend project)
 
-## Functionalities of the Lottery Application
-- Ticket generating from user input numbers
-- Browsing previous winning numbers
-- Scheduler is generating winning numbers every saturday
 
 Lottery-Lotto is an online version of the classic number lottery. Users select 6 unique numbers from 1 to 99 to receive a special ticket ID. Winners are determined weekly by matching at least 3 numbers. Results, user tickets, and winning numbers are stored in a MongoDB database using SpringData. A scheduled lottery draw occurs weekly (every Saturday at 12:00), processing all tickets to identify winners. Users can check their results and claim their prizes using their unique ticket ID.
 
 
-> VERSION: 1.1.0 <br>
 > AUTHOR: SZYMON KORNIK <br>
 > LINKEDIN: https://www.linkedin.com/in/szymon-kornik-3b12ba217/ <br>
 > WEBSITE: https://www.szymonkornik.com/ <br>
