@@ -8,7 +8,9 @@ Lottery is an online version of the classic number lottery-Lotto. Users select 6
 > LINKEDIN: https://www.linkedin.com/in/szymon-kornik-3b12ba217/ <br>
 > WEBSITE: https://www.szymonkornik.com/ <br>
 
+
 ## Specification
+
 
 - Spring Boot web application
 - Architecture: Modular monolith hexagonal architecture 
@@ -19,9 +21,12 @@ Lottery is an online version of the classic number lottery-Lotto. Users select 6
 - Scheduled winning numbers generating and result proccesing
 - Full containerization in Docker
 
+
 ## Tech
 
+
 Lottery is developed using following technologies: <br>
+
 
 Core: <br>
 ![image](https://img.shields.io/badge/17-Java-orange?style=for-the-badge) &nbsp;
@@ -61,7 +66,11 @@ Application provides two endpoints: for checking results by ticket ID and for nu
 
 Service url: http://localhost:8080
 
-|       ENDPOINT        | METHOD |         REQUEST          | RESPONSE |             FUNCTION              |
-|:---------------------:|:------:|:------------------------:|:--------:|:---------------------------------:|
-|  /results/{ticketId}  |  GET   | PATH VARIABLE (ticketId) |   JSON   |  user retrieves results for ID    |
-|    /inputNumbers      |  POST  | BODY-JSON (inputNumbers) |   JSON   |  user inputs 6 distinct numbers   |
+
+|       ENDPOINT        | METHOD |         REQUEST            | RESPONSE |             FUNCTION                       |
+|:---------------------:|:------:|:--------------------------:|:--------:|:------------------------------------------:|
+|  /results/{ticketId}  |  GET   | PATH VARIABLE (ticketId)   |   JSON   |  user retrieves results for ID             |
+|    /inputNumbers      |  POST  | BODY-JSON (inputNumbers)   |   JSON   |  user inputs 6 distinct numbers            |
+|    /register          |  POST  | BODY-JSON (registerRequest)|   JSON   | Register a new user                        |
+|     /token            |  POST  | BODY-JSON (loginRequest)   |   JSON   | Generate an access token with login details|
+
