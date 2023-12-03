@@ -1,7 +1,14 @@
 spring:
+  cache:
+    type: redis
+    redis:
+      time-to-live: PT30M
   data:
     mongodb:
       uri: mongodb://admin:admin@localhost:27017/lotto-web
+    redis:
+      port: ${REDIS_PORT:63792}
+      host: ${REDIS_HOST:localhost}
   main:
     allow-bean-definition-overriding: true
   mvc:
