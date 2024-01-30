@@ -3,7 +3,6 @@ package pl.lotto.feature;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,6 @@ import pl.lotto.domain.loginandregister.dto.RegisterResultDto;
 import pl.lotto.domain.numbergenerator.WinningNumbersGeneratorFacade;
 import pl.lotto.domain.numbergenerator.WinningNumbersNotFoundException;
 import pl.lotto.domain.numberreceiver.dto.NumberReceiverResultDto;
-import pl.lotto.domain.resultannouncer.dto.ResponseDto;
 import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerDto;
 import pl.lotto.domain.resultchecker.PlayerNotFoundByHashException;
 import pl.lotto.domain.resultchecker.ResultCheckerFacade;
@@ -43,16 +41,17 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
     WinningNumbersGeneratorFacade winningNumbersGeneratorFacade;
     @Autowired
     ResultCheckerFacade resultCheckerFacade;
+    @Container
+    public static MongoDBContainer mongoDBcontainer2 = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
     @DynamicPropertySource
     public static void propertyOverride(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", mongoDBcontainer::getReplicaSetUrl);
+        registry.add("spring.data.mongodb.uri", mongoDBcontainer2::getReplicaSetUrl);
         registry.add("lotto.number-generator.http.client.config.port", () -> wireMockServer.getPort());
         registry.add("lotto.number-generator.http.client.config.uri", () -> WIRE_MOCK_HOST);
     }
 
     @Test
     public void should_user_win_and_system_should_generate_winners() throws Exception {
-        mongoDBcontainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
         //step 1: external service returns 6 random numbers (1,2,3,4,5,6)
         //given
         wireMockServer.stubFor(WireMock.get("/api/v1.0/random?min=1&max=99&count=25")

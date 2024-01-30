@@ -88,6 +88,6 @@ Service url: http://localhost:8080
 
 Future plans:
 
-- *Implement frontend with Angular*
+- *Implement frontend with Angular* 
 - *Deploying on AWS*
 - *Extract modules to microservices architecture*
