@@ -10,8 +10,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.utility.DockerImageName;
 import pl.lotto.BaseIntegrationTest;
 import pl.lotto.domain.loginandregister.dto.RegisterResultDto;
 import pl.lotto.domain.numbergenerator.WinningNumbersGeneratorFacade;
@@ -38,10 +43,16 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
     WinningNumbersGeneratorFacade winningNumbersGeneratorFacade;
     @Autowired
     ResultCheckerFacade resultCheckerFacade;
+    @DynamicPropertySource
+    public static void propertyOverride(DynamicPropertyRegistry registry) {
+        registry.add("spring.data.mongodb.uri", mongoDBcontainer::getReplicaSetUrl);
+        registry.add("lotto.number-generator.http.client.config.port", () -> wireMockServer.getPort());
+        registry.add("lotto.number-generator.http.client.config.uri", () -> WIRE_MOCK_HOST);
+    }
 
     @Test
     public void should_user_win_and_system_should_generate_winners() throws Exception {
-
+        mongoDBcontainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
         //step 1: external service returns 6 random numbers (1,2,3,4,5,6)
         //given
         wireMockServer.stubFor(WireMock.get("/api/v1.0/random?min=1&max=99&count=25")
@@ -62,7 +73,7 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
                 .pollInterval(Duration.ofSeconds(1))
                 .until(() -> {
                             try {
-                                return !winningNumbersGeneratorFacade.retrieveWinningNumbersByDate(drawDate).winningNumbers().isEmpty();
+                                return !winningNumbersGeneratorFacade.getWinningNumbersByDrawDate(drawDate).winningNumbers().isEmpty();
                             } catch (WinningNumbersNotFoundException exception) {
                                 return false;
                             }
@@ -111,8 +122,8 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
         ResultActions performRegister = mockMvc.perform(post("/register")
                 .content("""
                         {
-                        "username": "someUser",
-                        "password": "somePassword"
+                        "username": "user",
+                        "password": "password"
                         }
                         """.trim())
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
@@ -121,7 +132,7 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
         String jsonResultRegistration = mvcResultRegistration.getResponse().getContentAsString();
         RegisterResultDto registerResultDto = objectMapper.readValue(jsonResultRegistration, RegisterResultDto.class);
         assertAll(
-                () -> assertThat(registerResultDto.username()).isEqualTo("someUser"),
+                () -> assertThat(registerResultDto.username()).isEqualTo("user"),
                 () -> assertThat(registerResultDto.isCreated()).isTrue(),
                 () -> assertThat(registerResultDto.id()).isNotNull()
         );
@@ -132,8 +143,8 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
         ResultActions performLoginAfterRegistration = mockMvc.perform(post("/token")
                 .content("""
                         {
-                        "username": "someUser",
-                        "password": "somePassword"
+                        "username": "user",
+                        "password": "password"
                         }
                         """.trim())
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
@@ -144,7 +155,7 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
         String token = jwtResponseDto.token();
         assertAll(
                 () -> assertThat(token).matches(Pattern.compile("^([A-Za-z0-9-_=]+\\.)+([A-Za-z0-9-_=])+\\.?$")),
-                () -> assertThat(jwtResponseDto.username()).isEqualTo("someUser")
+                () -> assertThat(jwtResponseDto.username()).isEqualTo("user")
         );
 
 

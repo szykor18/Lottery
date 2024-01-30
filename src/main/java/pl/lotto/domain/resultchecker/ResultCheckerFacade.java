@@ -1,26 +1,31 @@
 package pl.lotto.domain.resultchecker;
 
 import lombok.AllArgsConstructor;
+import pl.lotto.domain.drawdategenerator.DrawDateFacade;
 import pl.lotto.domain.numbergenerator.WinningNumbersGeneratorFacade;
 import pl.lotto.domain.numbergenerator.dto.WinningNumbersDto;
 import pl.lotto.domain.numberreceiver.NumberReceiverFacade;
 import pl.lotto.domain.numberreceiver.dto.TicketDto;
 import pl.lotto.domain.resultchecker.dto.PlayerDto;
 import pl.lotto.domain.resultchecker.dto.PlayersResultsDto;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import static pl.lotto.domain.resultchecker.ResultMapper.*;
 
 @AllArgsConstructor
 public class ResultCheckerFacade {
-    NumberReceiverFacade numberReceiverFacade;
-    WinningNumbersGeneratorFacade winningNumbersGeneratorFacade;
-    PlayerRepository playerRepository;
-    WinnersRetriever winnersRetriever;
+    private NumberReceiverFacade numberReceiverFacade;
+    private WinningNumbersGeneratorFacade winningNumbersGeneratorFacade;
+    private PlayerRepository playerRepository;
+    private WinnersRetriever winnersRetriever;
+    private DrawDateFacade drawDateFacade;
     public PlayersResultsDto generateResults() {
+        LocalDateTime drawDate = drawDateFacade.getNextDrawDate();
         List<TicketDto> allTicketsByDate = numberReceiverFacade.retrieveAllTicketsByNextDrawDate();
         List<Ticket> tickets = mapFromTicketDto(allTicketsByDate);
-        WinningNumbersDto winningNumbersDto = winningNumbersGeneratorFacade.generateWinningNumbers();
+        WinningNumbersDto winningNumbersDto = winningNumbersGeneratorFacade.getWinningNumbersByDrawDate(drawDate);
         Set<Integer> winningNumbers = winningNumbersDto.winningNumbers();
         if (winningNumbers == null || winningNumbers.isEmpty()) {
             return PlayersResultsDto.builder()

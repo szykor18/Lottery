@@ -67,7 +67,8 @@ public class PlayerRepositoryTestImpl implements PlayerRepository{
 
     @Override
     public <S extends Player> S save(S entity) {
-        return null;
+        playersList.put(entity.hash(), entity);
+        return entity;
     }
 
     @Override

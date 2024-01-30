@@ -83,7 +83,7 @@ public class WinningNumbersGeneratorFacadeTest {
                 winningNumbersRepository,
                 drawDateFacade);
         //when
-        WinningNumbersDto winningNumbersDto = winningNumbersGeneratorFacade.retrieveWinningNumbersByDate(drawDate);
+        WinningNumbersDto winningNumbersDto = winningNumbersGeneratorFacade.getWinningNumbersByDrawDate(drawDate);
         //then
         WinningNumbersDto expectedWinningNumbersDto = WinningNumbersDto.builder()
                 .drawDate(drawDate)
@@ -102,7 +102,7 @@ public class WinningNumbersGeneratorFacadeTest {
                 drawDateFacade);
         //when
         //then
-        assertThrows(WinningNumbersNotFoundException.class, () -> winningNumbersGeneratorFacade.retrieveWinningNumbersByDate(drawDate), "Not Found");
+        assertThrows(WinningNumbersNotFoundException.class, () -> winningNumbersGeneratorFacade.getWinningNumbersByDrawDate(drawDate), "Not Found");
     }
     @Test
     public void it_should_return_true_if_numbers_are_generated_by_given_date() {

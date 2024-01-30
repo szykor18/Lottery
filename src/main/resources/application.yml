@@ -9,9 +9,9 @@ spring:
       matching-strategy: ANT_PATH_MATCHER
 lotto:
   result-checker:
-    frequency: "0 55 11 * * 6"
+    frequency: "0 0 12 * * 6" #0 0 12 * * 6
   number-generator:
-    frequency: "0 0 12 * * 6"
+    frequency: "0 55 11 * * 6" #0 55 11 * * 6
     facade:
       minBound: 1
       maxBound: 99

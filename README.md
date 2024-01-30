@@ -37,7 +37,8 @@ Lottery is an online version of the classic number lottery-Lotto. Users select 6
 Lottery is developed using following technologies: <br>
 
 
-Core: <br>
+### Core:
+
 ![image](https://img.shields.io/badge/17-Java-orange?style=for-the-badge) &nbsp;
 ![image](https://img.shields.io/badge/apache_maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white) &nbsp;
 ![image](https://img.shields.io/badge/Spring_Boot-F2F4F9?style=for-the-badge&logo=spring) &nbsp;
@@ -45,7 +46,8 @@ Core: <br>
 ![image](https://img.shields.io/badge/redis-%23DD0031.svg?&style=for-the-badge&logo=redis&logoColor=white) &nbsp;
 ![image](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white) &nbsp;
 
-Testing:<br>
+### Testing:
+
 ![image](https://img.shields.io/badge/Junit5-25A162?style=for-the-badge&logo=junit5&logoColor=white) &nbsp;
 ![image](https://img.shields.io/badge/Mockito-78A641?style=for-the-badge) &nbsp;
 ![image](https://img.shields.io/badge/Testcontainers-9B489A?style=for-the-badge) &nbsp;
@@ -83,3 +85,9 @@ Service url: http://localhost:8080
 |    /register          |  POST  | BODY-JSON (registerRequest)|   JSON   | Register a new user                        |
 |     /token            |  POST  | BODY-JSON (loginRequest)   |   JSON   | Generate an access token with login details|
 
+
+Future plans:
+
+- *Implement frontend with Angular*
+- *Deploying on AWS*
+- *Extract modules to microservices architecture*

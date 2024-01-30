@@ -2,9 +2,14 @@ package pl.lotto.domain.resultchecker;
 
 import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
+import pl.lotto.domain.AdjustableClock;
+import pl.lotto.domain.drawdategenerator.DrawDateConfiguration;
+import pl.lotto.domain.drawdategenerator.DrawDateFacade;
+import pl.lotto.domain.drawdategenerator.DrawDateGeneratorTestImpl;
 import pl.lotto.domain.numbergenerator.WinningNumbersGeneratorFacade;
 import pl.lotto.domain.numbergenerator.dto.WinningNumbersDto;
 import pl.lotto.domain.numberreceiver.NumberReceiverFacade;
@@ -18,18 +23,24 @@ import static org.mockito.Mockito.when;
 
 class ResultCheckerFacadeTest {
 
+    ZoneId warsawZone = ZoneId.of("Europe/Warsaw");
+    AdjustableClock clock = new AdjustableClock(LocalDateTime.of(2023,11,4,14,0,0)
+            .atZone(warsawZone).toInstant(), warsawZone);
+    private final DrawDateFacade drawDateFacade = new DrawDateFacade(new DrawDateGeneratorTestImpl(clock));
     private final PlayerRepository playerRepository = new PlayerRepositoryTestImpl();
     private final NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
     private final WinningNumbersGeneratorFacade winningNumbersGeneratorFacade = mock(WinningNumbersGeneratorFacade.class);
     ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberReceiverFacade, winningNumbersGeneratorFacade, new PlayerRepositoryTestImpl(),
-            new WinnersRetriever());
+            new WinnersRetriever(), drawDateFacade);
+
     @Test
     public void should_generate_all_players_with_correct_message() {
         //given
         LocalDateTime drawDate = LocalDateTime.of(2023,11,11,12,0,0);
-        when(winningNumbersGeneratorFacade.generateWinningNumbers()).thenReturn(
+        when(winningNumbersGeneratorFacade.getWinningNumbersByDrawDate(drawDate)).thenReturn(
                 WinningNumbersDto.builder()
                         .winningNumbers(Set.of(1,2,3,4,5,6))
+                        .drawDate(drawDate)
                         .build()
         );
         when(numberReceiverFacade.retrieveAllTicketsByNextDrawDate()).thenReturn(
@@ -83,7 +94,8 @@ class ResultCheckerFacadeTest {
     @Test
     public void should_generate_fail_message_when_winningNumbers_equal_null() {
         //given
-        when(winningNumbersGeneratorFacade.generateWinningNumbers()).thenReturn(WinningNumbersDto.builder()
+        LocalDateTime drawDate = LocalDateTime.of(2023,11,11,12,0,0);
+        when(winningNumbersGeneratorFacade.getWinningNumbersByDrawDate(drawDate)).thenReturn(WinningNumbersDto.builder()
                 .winningNumbers(null)
                 .build());
         //when
@@ -95,7 +107,8 @@ class ResultCheckerFacadeTest {
     @Test
     public void should_generate_fail_message_when_winningNumbers_is_empty() {
         //given
-        when(winningNumbersGeneratorFacade.generateWinningNumbers()).thenReturn(WinningNumbersDto.builder()
+        LocalDateTime drawDate = LocalDateTime.of(2023,11,11,12,0,0);
+        when(winningNumbersGeneratorFacade.getWinningNumbersByDrawDate(drawDate)).thenReturn(WinningNumbersDto.builder()
                 .winningNumbers(Set.of())
                 .build());
         //when
@@ -108,7 +121,7 @@ class ResultCheckerFacadeTest {
     public void it_should_generate_result_with_correct_credentials() {
         //given
         LocalDateTime drawDate = LocalDateTime.of(2023, 11, 11, 12, 0, 0);
-        when(winningNumbersGeneratorFacade.generateWinningNumbers()).thenReturn(WinningNumbersDto.builder()
+        when(winningNumbersGeneratorFacade.getWinningNumbersByDrawDate(drawDate)).thenReturn(WinningNumbersDto.builder()
                 .winningNumbers(Set.of(1, 2, 3, 4, 5, 6))
                 .build());
         String hash = "001";

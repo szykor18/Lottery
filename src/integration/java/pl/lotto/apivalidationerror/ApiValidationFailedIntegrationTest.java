@@ -3,8 +3,13 @@ package pl.lotto.apivalidationerror;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.utility.DockerImageName;
 import pl.lotto.BaseIntegrationTest;
 import pl.lotto.infrastructure.apivalidation.ApiValidationErrorResponse;
 
@@ -13,6 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ApiValidationFailedIntegrationTest extends BaseIntegrationTest {
+
 
     @Test
     @WithMockUser

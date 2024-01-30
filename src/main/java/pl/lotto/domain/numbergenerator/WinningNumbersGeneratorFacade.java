@@ -30,17 +30,17 @@ public class WinningNumbersGeneratorFacade {
                 .build();
     }
 
-    public WinningNumbersDto retrieveWinningNumbersByDate(LocalDateTime date) {
-        WinningNumbers winningNumbersByDate = winningNumbersRepository.findWinningNumbersByDrawDate(date)
-                .orElseThrow(() -> new WinningNumbersNotFoundException("Not found"));
-        return WinningNumbersDto.builder()
-                .winningNumbers(winningNumbersByDate.winningNumbers())
-                .drawDate(winningNumbersByDate.drawDate())
-                .build();
-    }
-
     public boolean areWinningNumbersGeneratedByDate() {
         LocalDateTime drawDate = drawDateFacade.getNextDrawDate();
         return winningNumbersRepository.existsByDrawDate(drawDate);
+    }
+
+    public WinningNumbersDto getWinningNumbersByDrawDate(LocalDateTime drawDate) {
+        WinningNumbers winningNumbers = winningNumbersRepository.findWinningNumbersByDrawDate(drawDate)
+                .orElseThrow(() -> new WinningNumbersNotFoundException("Winning numbers not found"));
+        return WinningNumbersDto.builder()
+                .winningNumbers(winningNumbers.winningNumbers())
+                .drawDate(drawDate)
+                .build();
     }
 }

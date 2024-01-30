@@ -39,7 +39,7 @@ public class NumberReceiverFacade {
         if (date.isAfter(nextDrawDate)) {
             return Collections.emptyList();
         }
-        return repository.findAllTicketsByDrawDate(date)
+        return repository.findAllByDrawDate(date)
                 .stream()
                 .map(TicketMapper::mapFromTicket)
                 .toList();

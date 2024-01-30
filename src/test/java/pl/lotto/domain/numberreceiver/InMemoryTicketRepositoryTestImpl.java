@@ -17,7 +17,7 @@ public class InMemoryTicketRepositoryTestImpl implements TicketRepository {
     Map<String, Ticket> inMemoryDatabase = new ConcurrentHashMap<>();
 
     @Override
-    public List<Ticket> findAllTicketsByDrawDate(LocalDateTime date) {
+    public List<Ticket> findAllByDrawDate(LocalDateTime date) {
         return inMemoryDatabase.values()
                 .stream()
                 .filter(ticket -> ticket.drawDate().equals(date))

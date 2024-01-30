@@ -36,7 +36,7 @@ public class BaseIntegrationTest {
     public AdjustableClock clock;
 
     @Container
-    public static final MongoDBContainer mongoDBcontainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
+    public static MongoDBContainer mongoDBcontainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
 
     @RegisterExtension
     public static WireMockExtension wireMockServer = WireMockExtension.newInstance()

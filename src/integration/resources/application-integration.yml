@@ -3,3 +3,7 @@ lotto:
     frequency: "*/5 * * * * *"
   result-checker:
     frequency: "*/7 * * * * *"
+
+jwt:
+  authentication:
+    expirationDays: 10000
