@@ -1,9 +1,15 @@
 lotto:
   number-generator:
-    frequency: "*/5 * * * * *"
+    frequency: "*/12 * * * * *"
   result-checker:
-    frequency: "*/7 * * * * *"
+    frequency: "*/15 * * * * *"
 
 jwt:
   authentication:
     expirationDays: 10000
+
+spring:
+  cache:
+    type: none
+    redis:
+      time-to-live: PT10S

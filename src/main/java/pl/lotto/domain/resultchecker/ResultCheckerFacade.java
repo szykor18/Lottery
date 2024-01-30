@@ -21,6 +21,7 @@ public class ResultCheckerFacade {
     private PlayerRepository playerRepository;
     private WinnersRetriever winnersRetriever;
     private DrawDateFacade drawDateFacade;
+
     public PlayersResultsDto generateResults() {
         LocalDateTime drawDate = drawDateFacade.getNextDrawDate();
         List<TicketDto> allTicketsByDate = numberReceiverFacade.retrieveAllTicketsByNextDrawDate();

@@ -204,7 +204,7 @@ public class UserPlayedLottoAndWonLottoIntegrationTest extends BaseIntegrationTe
         //step 10: system generated result for TicketId: sampleTicketId with draw date 19.11.2022 12:00, and saved it with 6 hit numbers, and won message
         //given && when && then
         await()
-                .atMost(Duration.ofSeconds(20))
+                .atMost(Duration.ofSeconds(30))
                 .pollInterval(Duration.ofSeconds(1))
                 .until(
                         () -> {

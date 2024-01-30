@@ -18,16 +18,8 @@ public class ResultAnnouncerFacade {
     private final ResultCheckerFacade resultCheckerFacade;
     private final ResponseRepository responseRepository;
     private final Clock clock;
-
+    @Cacheable("results")
     public ResultAnnouncerDto checkResult(String hash) {
-        if (responseRepository.existsById(hash)) {
-            Optional<Response> cachedResponse = responseRepository.findById(hash);
-            if (cachedResponse.isPresent()) {
-                return mapResponseToDto(cachedResponse.get())
-                        .message(ALREADY_CHECKED_MESSAGE.info)
-                        .build();
-            }
-        }
         PlayerDto playerDto = resultCheckerFacade.findPlayerByHash(hash);
         if (playerDto == null) {
             return ResultAnnouncerDto.builder()
