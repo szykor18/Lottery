@@ -1,4 +1,4 @@
-# Lottery (backend project)
+# Lottery (Full Stack Application)
 
 
 Lottery is an online version of the classic number lottery-Lotto. Users select 6 unique numbers from 1 to 99 to receive a special ticket ID. Winners are determined weekly by matching at least 3 numbers. Results, user tickets, and winning numbers are stored in a MongoDB database using SpringData. A scheduled lottery draw occurs weekly (every Saturday at 12:00), processing all tickets to identify winners. Users can check their results and claim their prizes using their unique ticket ID. Key features that distinguish this application:
@@ -51,6 +51,12 @@ Lottery is developed using following technologies: <br>
 ![image](https://img.shields.io/badge/Junit5-25A162?style=for-the-badge&logo=junit5&logoColor=white) &nbsp;
 ![image](https://img.shields.io/badge/Mockito-78A641?style=for-the-badge) &nbsp;
 ![image](https://img.shields.io/badge/Testcontainers-9B489A?style=for-the-badge) &nbsp;
+
+### Frontend:
+
+<img src="https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white" alt=""> &nbsp;
+<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt=""> &nbsp;
+<img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt=""> &nbsp;
 
 
 ## Installation and run
