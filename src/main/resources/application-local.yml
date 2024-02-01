@@ -5,7 +5,7 @@ spring:
       time-to-live: PT30M
   data:
     mongodb:
-      uri: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}?authSource=${MONGO_AUTH_SOURCE}
+      uri: mongodb://admin:admin@localhost:27017/lotto-web
     redis:
       port: ${REDIS_PORT:63792}
       host: ${REDIS_HOST:localhost}
@@ -38,4 +38,4 @@ jwt:
     issuer: lotto-backend-service
 
 server:
-  port: 8000
+  port: 8080

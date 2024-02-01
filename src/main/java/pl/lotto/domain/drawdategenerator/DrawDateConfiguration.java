@@ -16,6 +16,7 @@ public class DrawDateConfiguration {
     DrawDateGenerator drawDateGenerator() {
         return new DrawDateGenerator(clock());
     }
+
     @Bean
     @Primary
     Clock clock() {

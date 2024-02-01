@@ -3,6 +3,7 @@ package pl.lotto.infrastructure.security.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,8 +18,8 @@ import java.time.*;
 @AllArgsConstructor
 public class JwtAuthenticator {
     private final AuthenticationManager authenticationManager;
-    private final Clock clock;
     private final JwtConfigurationProperties properties;
+    private final @Qualifier("clock") Clock clock;
 
     public JwtResponseDto authenticateAndGenerateToken(TokenRequestDto tokenRequestDto) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
