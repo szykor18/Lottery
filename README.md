@@ -1,6 +1,6 @@
 # Lottery (Full Stack Application)
 
-You can chech the application here: https://www.aws-lottery.com (soon)
+You can chech the application here: <a href="http://ec2-3-77-193-73.eu-central-1.compute.amazonaws.com:8000/swagger-ui/index.html#">http://ec2-3-77-193-73.eu-central-1.compute.amazonaws.com:8000/swagger-ui/index.html#</a>
 
 Lottery is an online version of the classic number lottery-Lotto. Users select 6 unique numbers from 1 to 99 to receive a special ticket ID. Winners are determined weekly by matching at least 3 numbers. Results, user tickets, and winning numbers are stored in a MongoDB database using SpringData. A scheduled lottery draw occurs weekly (every Saturday at 12:00), processing all tickets to identify winners. Users can check their results and claim their prizes using their unique ticket ID. Key features that distinguish this application:
 - *User's Input Numbers Validation*
