@@ -11,7 +11,6 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
       MONGO_INITDB_DATABASE: lotto-web
-      MONGO_INITDB_ROOT_DATABASE: admin
     volumes:
       - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
 
@@ -53,3 +52,5 @@ services:
       MONGO_PORT: 27017
       MONGO_DB_NAME: lotto-web
       MONGO_AUTH_SOURCE: lotto-web
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
