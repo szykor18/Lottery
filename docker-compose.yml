@@ -54,3 +54,10 @@ services:
       MONGO_AUTH_SOURCE: lotto-web
       REDIS_HOST: redis
       REDIS_PORT: 6379
+
+  lottery-frontend:
+    container_name: lottery-frontend
+    image: 211125330771.dkr.ecr.eu-central-1.amazonaws.com/lottery-frontend:latest
+    restart: always
+    ports:
+      - "80:80"

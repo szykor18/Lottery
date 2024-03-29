@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pl.lotto.domain.loginandregister.LoginAndRegisterFacade;
+import pl.lotto.infrastructure.cors.CorsConfig;
 
 @Configuration
 @AllArgsConstructor
@@ -37,8 +38,9 @@ public class JwtSecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf(AbstractHttpConfigurer::disable);
+    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, CorsConfig config) throws Exception {
+        httpSecurity.csrf(AbstractHttpConfigurer::disable)
+        .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(config.corsConfigurationSource()));
         httpSecurity.authorizeHttpRequests(http -> http
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
