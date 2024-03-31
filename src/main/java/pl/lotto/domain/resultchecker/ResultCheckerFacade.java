@@ -12,6 +12,8 @@ import pl.lotto.domain.resultchecker.dto.PlayersResultsDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import static pl.lotto.domain.resultchecker.ResultMapper.*;
 
 @AllArgsConstructor
@@ -43,12 +45,12 @@ public class ResultCheckerFacade {
     public PlayerDto findPlayerByHash(String hash) {
         Player playerByHash = playerRepository.findByHash(hash).orElse(null);
         if (playerByHash == null) {
-            List<TicketDto> ticketDtos = numberReceiverFacade.retrieveAllTicketsByNextDrawDate();
-            boolean isTicketWaitingForDraw = ticketDtos.stream()
-                    .map(TicketDto::hash)
-                    .anyMatch(hashFromList -> ticketDtos.contains(hash));
+            List<String> ticketIds = numberReceiverFacade.retrieveAllTicketsByNextDrawDate()
+                    .stream().map(TicketDto::hash).toList();
+            boolean isTicketWaitingForDraw = ticketIds.stream()
+                    .anyMatch(hashFromList -> ticketIds.contains(hash));
             if (isTicketWaitingForDraw) {
-                throw new RuntimeException("Your ticket is waiting for the draw, please come back after Saturday 12:00 p.m.");
+                throw new TicketFoundButDrawNotHappenedYet("Your ticket is waiting for the draw, please come back after Saturday 12:00 p.m.");
             }
             throw new PlayerNotFoundByHashException(hash);
         }

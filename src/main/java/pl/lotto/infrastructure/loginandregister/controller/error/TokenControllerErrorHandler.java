@@ -14,7 +14,7 @@ public class TokenControllerErrorHandler {
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
-    public TokenErrorResponse handleExceptionUnauthorized() {
-        return new TokenErrorResponse(BAD_CREDENTIALS_MESSAGE, HttpStatus.UNAUTHORIZED);
+    public ErrorResponse handleExceptionUnauthorized() {
+        return new ErrorResponse(BAD_CREDENTIALS_MESSAGE, HttpStatus.UNAUTHORIZED);
     }
 }

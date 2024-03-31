@@ -19,7 +19,7 @@ public class LoginAndRegisterFacade {
     public RegisterResultDto registerUser(RegisterRequestDto registerRequestDto) {
         boolean isUserWithSameUsername = userRepository.findByUsername(registerRequestDto.username()).isPresent();
         if (isUserWithSameUsername) {
-            throw new RuntimeException("User with username: '" + registerRequestDto.username() + "' already exists.");
+            throw new UserAlreadyExistsException("User with username: '" + registerRequestDto.username() + "' already exists.");
         }
         User userToSave = UserMapper.mapFromRegisterRequestToUser(registerRequestDto);
         User savedUser = userRepository.save(userToSave);
