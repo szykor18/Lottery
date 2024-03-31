@@ -41,8 +41,17 @@ public class ResultCheckerFacade {
                 .build();
     }
     public PlayerDto findPlayerByHash(String hash) {
-        Player playerByHash = playerRepository.findByHash(hash)
-                .orElseThrow(() -> new PlayerNotFoundByHashException(hash));
+        Player playerByHash = playerRepository.findByHash(hash).orElse(null);
+        if (playerByHash == null) {
+            List<TicketDto> ticketDtos = numberReceiverFacade.retrieveAllTicketsByNextDrawDate();
+            boolean isTicketWaitingForDraw = ticketDtos.stream()
+                    .map(TicketDto::hash)
+                    .anyMatch(hashFromList -> ticketDtos.contains(hash));
+            if (isTicketWaitingForDraw) {
+                throw new RuntimeException("Your ticket is waiting for the draw, please come back after Saturday 12:00 p.m.");
+            }
+            throw new PlayerNotFoundByHashException(hash);
+        }
         return mapToPlayerDto(playerByHash);
     }
 }
