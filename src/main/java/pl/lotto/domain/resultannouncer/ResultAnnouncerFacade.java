@@ -9,7 +9,9 @@ import pl.lotto.domain.resultchecker.dto.PlayerDto;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static pl.lotto.domain.resultannouncer.ResultMapper.*;
 import static pl.lotto.domain.resultannouncer.ResultMessage.*;
@@ -45,6 +47,15 @@ public class ResultAnnouncerFacade {
                 .responseDto(responseDto)
                 .message(LOSE_MESSAGE.info)
                 .build();
+    }
+
+    public List<ResultAnnouncerDto> getAllResults() {
+        return responseRepository.findAll().stream()
+                .map(response -> ResultAnnouncerDto.builder()
+                        .responseDto(mapResponseToDto(response).build().responseDto())
+                        .message("")
+                        .build())
+                .collect(Collectors.toList());
     }
 
     private boolean isBeforeDrawTime(LocalDateTime now, ResponseDto responseDto) {

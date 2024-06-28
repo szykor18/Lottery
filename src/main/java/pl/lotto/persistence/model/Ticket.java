@@ -1,4 +1,4 @@
-package pl.lotto.domain.numberreceiver;
+package pl.lotto.persistence.model;
 
 import lombok.Builder;
 import org.springframework.data.annotation.Id;
@@ -10,7 +10,7 @@ import java.util.Set;
 //entity to database
 @Builder
 @Document("tickets")
-record Ticket(@Id String hash,
+public record Ticket(@Id String hash,
               LocalDateTime drawDate,
               Set<Integer> numbersFromUser) {
 }

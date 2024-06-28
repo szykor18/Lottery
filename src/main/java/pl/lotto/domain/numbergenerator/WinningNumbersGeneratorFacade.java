@@ -3,7 +3,8 @@ import lombok.AllArgsConstructor;
 import pl.lotto.domain.drawdategenerator.DrawDateFacade;
 import pl.lotto.domain.numbergenerator.dto.SixRandomNumbersDto;
 import pl.lotto.domain.numbergenerator.dto.WinningNumbersDto;
-import pl.lotto.domain.numberreceiver.NumberReceiverFacade;
+import pl.lotto.persistence.model.WinningNumbers;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 

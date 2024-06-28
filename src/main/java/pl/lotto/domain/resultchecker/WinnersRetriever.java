@@ -1,5 +1,8 @@
 package pl.lotto.domain.resultchecker;
 
+
+import pl.lotto.persistence.model.Player;
+
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

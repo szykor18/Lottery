@@ -40,7 +40,7 @@ public class JwtSecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, CorsConfig config) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
-        .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(config.corsConfigurationSource()));
+                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(config.corsConfigurationSource()));
         httpSecurity.authorizeHttpRequests(http -> http
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
@@ -48,6 +48,8 @@ public class JwtSecurityConfig {
                         .requestMatchers("/token/**").permitAll()
                         .requestMatchers("/register/**").permitAll()
                         .requestMatchers("/swagger-resources/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/user/**").hasRole("USER")
                         .anyRequest().authenticated())
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .httpBasic(AbstractHttpConfigurer::disable)

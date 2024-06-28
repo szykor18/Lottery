@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import pl.lotto.domain.drawdategenerator.DrawDateFacade;
 import pl.lotto.domain.numberreceiver.dto.NumberReceiverResultDto;
 import pl.lotto.domain.numberreceiver.dto.TicketDto;
+import pl.lotto.persistence.model.Ticket;
+
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;

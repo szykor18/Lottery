@@ -1,6 +1,7 @@
 package pl.lotto.domain.numberreceiver;
 
 import pl.lotto.domain.numberreceiver.dto.TicketDto;
+import pl.lotto.persistence.model.Ticket;
 
 class TicketMapper {
     static TicketDto mapFromTicket(Ticket ticket) {

@@ -5,6 +5,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import pl.lotto.domain.loginandregister.dto.RegisterRequestDto;
 import pl.lotto.domain.loginandregister.dto.RegisterResultDto;
 import pl.lotto.domain.loginandregister.dto.UserDto;
+import pl.lotto.persistence.model.User;
 
 @AllArgsConstructor
 public class LoginAndRegisterFacade {

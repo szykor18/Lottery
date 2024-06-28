@@ -3,6 +3,7 @@ package pl.lotto.domain.resultannouncer;
 import pl.lotto.domain.resultannouncer.dto.ResponseDto;
 import pl.lotto.domain.resultannouncer.dto.ResultAnnouncerDto;
 import pl.lotto.domain.resultchecker.dto.PlayerDto;
+import pl.lotto.persistence.model.Response;
 
 class ResultMapper {
     static ResponseDto mapFromPlayerDto(PlayerDto playerDto) {

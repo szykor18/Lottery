@@ -1,4 +1,4 @@
-package pl.lotto.domain.resultannouncer;
+package pl.lotto.persistence.model;
 
 import lombok.Builder;
 import org.springframework.data.annotation.Id;
@@ -9,9 +9,10 @@ import java.util.Set;
 
 @Builder
 @Document("responses")
-record Response(@Id String hash,
+public record Response(@Id String hash,
                        Set<Integer> numbers,
                        Set<Integer> wonNumbers,
+                       Set<Player> players,
                        LocalDateTime drawDate,
                        boolean isWinner) {
 }

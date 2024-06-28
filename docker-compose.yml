@@ -41,8 +41,8 @@ services:
   lottery:
     container_name: lottery
     build: .
-    image: 211125330771.dkr.ecr.eu-central-1.amazonaws.com/lottery:latest
-#    restart: always
+#    image: 211125330771.dkr.ecr.eu-central-1.amazonaws.com/lottery:latest
+    restart: always
     ports:
       - "8000:8000"
     environment:

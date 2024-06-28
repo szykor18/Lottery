@@ -3,7 +3,8 @@ package pl.lotto.domain.numbergenerator;
 import org.junit.jupiter.api.Test;
 import pl.lotto.domain.drawdategenerator.DrawDateFacade;
 import pl.lotto.domain.numbergenerator.dto.WinningNumbersDto;
-import pl.lotto.domain.numberreceiver.NumberReceiverFacade;
+import pl.lotto.persistence.WinningNumbers;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;

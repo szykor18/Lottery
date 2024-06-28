@@ -8,11 +8,11 @@ import pl.lotto.domain.numberreceiver.NumberReceiverFacade;
 import pl.lotto.domain.numberreceiver.dto.TicketDto;
 import pl.lotto.domain.resultchecker.dto.PlayerDto;
 import pl.lotto.domain.resultchecker.dto.PlayersResultsDto;
+import pl.lotto.persistence.model.Player;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static pl.lotto.domain.resultchecker.ResultMapper.*;
 

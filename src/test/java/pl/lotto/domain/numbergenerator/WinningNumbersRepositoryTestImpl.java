@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
+import pl.lotto.persistence.WinningNumbers;
 
 import java.time.LocalDateTime;
 import java.util.List;

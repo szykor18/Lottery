@@ -2,6 +2,7 @@ package pl.lotto.domain.resultchecker;
 
 import pl.lotto.domain.numberreceiver.dto.TicketDto;
 import pl.lotto.domain.resultchecker.dto.PlayerDto;
+import pl.lotto.persistence.model.Player;
 
 import java.util.List;
 

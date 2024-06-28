@@ -1,4 +1,4 @@
-package pl.lotto.domain.loginandregister;
+package pl.lotto.persistence.model;
 
 import lombok.Builder;
 import org.springframework.data.annotation.Id;
@@ -11,7 +11,7 @@ import java.util.Collection;
 
 @Builder
 @Document("users")
-record User(@Id String id,
+public record User(@Id String id,
             @Indexed(unique = true) String username,
             String password) implements UserDetails {
     @Override

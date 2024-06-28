@@ -1,4 +1,4 @@
-package pl.lotto.domain.resultchecker;
+package pl.lotto.persistence.model;
 
 import lombok.Builder;
 import org.springframework.data.annotation.Id;
@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Builder
 @Document("players")
-record Player(@Id String hash,
+public record Player(@Id String hash,
                      Set<Integer> numbers,
                      Set<Integer> hitNumbers,
                      LocalDateTime drawDate,
