@@ -1,6 +1,6 @@
 # Lottery (Full Stack Application)
 
-You can chech the application here: <a href="http://ec2-3-126-250-7.eu-central-1.compute.amazonaws.com">http://ec2-3-126-250-7.eu-central-1.compute.amazonaws.com</a>
+You can chech the application here: <a href="http://ec2-18-193-71-195.eu-central-1.compute.amazonaws.com">http://ec2-18-193-71-195.eu-central-1.compute.amazonaws.com</a>
 
 Lottery is an online version of the classic number lottery-Lotto. Users select 6 unique numbers from 1 to 99 to receive a special ticket ID. Winners are determined weekly by matching at least 3 numbers. Results, user tickets, and winning numbers are stored in a MongoDB database using SpringData. A scheduled lottery draw occurs weekly (every Saturday at 12:00), processing all tickets to identify winners. Users can check their results and claim their prizes using their unique ticket ID. Key features that distinguish this application:
 - *User's Input Numbers Validation*
@@ -95,6 +95,6 @@ Service url: http://localhost:8080
 
 Future plans:
 
-- *Implement frontend with Angular* 
+- *Implement frontend with Angular* ✅
 - *Deploying on AWS* ✅
 - *Extract modules to microservices architecture*
