@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import pl.lotto.domain.loginandregister.LoginAndRegisterFacade;
 import pl.lotto.domain.loginandregister.dto.UserDto;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,12 +24,8 @@ public class LoginUserDetailsService implements UserDetailsService {
     }
 
     private org.springframework.security.core.userdetails.User getUser(UserDto userDto) {
-        List<GrantedAuthority> authorities = userDto.roles().stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                .collect(Collectors.toList());
-
         return new org.springframework.security.core.userdetails.User(
-                userDto.username(), userDto.password(), authorities
+                userDto.username(), userDto.password(), Collections.emptyList()
         );
     }
 }
