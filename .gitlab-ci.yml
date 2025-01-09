@@ -1,0 +1,36 @@
+image: maven:3.8.5-eclipse-temurin-17-alpine
+
+stages:
+  - build
+  - deploy
+
+build_dev:
+  stage: build
+  only:
+    - develop
+  before_script:
+    - apk update
+    - apk add rsync openssh-client docker aws-cli
+  script:
+    - /bin/sh .deploy/setup-ssh.sh ec2-user@ec2-63-176-52-75.eu-central-1.compute.amazonaws.com
+    - mvn clean package
+    - aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 211125330771.dkr.ecr.eu-central-1.amazonaws.com
+    - docker build -t 211125330771.dkr.ecr.eu-central-1.amazonaws.com/lottery:latest .
+    - docker push 211125330771.dkr.ecr.eu-central-1.amazonaws.com/lottery:latest
+  artifacts:
+    paths:
+      - target
+      - .deploy
+
+deploy_dev:
+  stage: deploy
+  image: alpine
+  only:
+    - develop
+  before_script:
+    - apk update
+    - apk add rsync openssh-client
+  script:
+    - /bin/sh .deploy/setup-ssh.sh ec2-user@ec2-63-176-52-75.eu-central-1.compute.amazonaws.com
+    - ssh ec2-user@ec2-63-176-52-75.eu-central-1.compute.amazonaws.com 'bash' < .deploy/stop-service.sh
+    - ssh ec2-user@ec2-63-176-52-75.eu-central-1.compute.amazonaws.com 'bash' < .deploy/restart-service.sh
