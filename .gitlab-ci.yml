@@ -1,36 +1,52 @@
 image: maven:3.8.5-eclipse-temurin-17-alpine
 
+variables:
+  DOCKER_IMAGE: 211125330771.dkr.ecr.eu-central-1.amazonaws.com/lottery
+  EC2_HOST: ec2-user@3.64.125.147
+
 stages:
   - build
+  - package
   - deploy
 
-build_dev:
+maven-build:
   stage: build
   only:
-    - develop
-  before_script:
-    - apk update
-    - apk add rsync openssh-client docker aws-cli
+    - master
   script:
-    - /bin/sh .deploy/setup-ssh.sh ec2-user@ec2-63-176-52-75.eu-central-1.compute.amazonaws.com
-    - mvn clean package
-    - aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 211125330771.dkr.ecr.eu-central-1.amazonaws.com
-    - docker build -t 211125330771.dkr.ecr.eu-central-1.amazonaws.com/lottery:latest .
-    - docker push 211125330771.dkr.ecr.eu-central-1.amazonaws.com/lottery:latest
+    - ./mvnw clean package -DskipTests  # Skip tests for faster build, remove -DskipTests if you want to run tests
   artifacts:
     paths:
-      - target
-      - .deploy
+      - target/*.jar
+    expire_in: 1 hour
 
-deploy_dev:
-  stage: deploy
-  image: alpine
+docker-build:
+  stage: package
   only:
-    - develop
+    - master
   before_script:
-    - apk update
-    - apk add rsync openssh-client
+    - apk add --no-cache docker aws-cli
+    - aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin $DOCKER_IMAGE
   script:
-    - /bin/sh .deploy/setup-ssh.sh ec2-user@ec2-63-176-52-75.eu-central-1.compute.amazonaws.com
-    - ssh ec2-user@ec2-63-176-52-75.eu-central-1.compute.amazonaws.com 'bash' < .deploy/stop-service.sh
-    - ssh ec2-user@ec2-63-176-52-75.eu-central-1.compute.amazonaws.com 'bash' < .deploy/restart-service.sh
+    - docker build -t $DOCKER_IMAGE:latest .
+    - docker push $DOCKER_IMAGE:latest
+
+deploy:
+  stage: deploy
+  only:
+    - master
+  before_script:
+    - apk add --no-cache openssh-client
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+  script:
+    - scp docker-compose.yml $EC2_HOST:~/
+    - |
+      ssh $EC2_HOST '
+        aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin $DOCKER_IMAGE
+        docker-compose down
+        docker-compose pull lottery
+        docker-compose up -d
+      '
