@@ -1,3 +1,5 @@
-FROM eclipse-temurin:17-jre-alpine
-COPY /target/lottery.jar /lottery.jar
-ENTRYPOINT ["java","-jar","/lottery.jar"]
+FROM nginx:alpine
+COPY --from=build /app/target/lottery.jar /lottery.jar
+COPY nginx/api.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80 443
+CMD ["nginx", "-g", "daemon off;"]
